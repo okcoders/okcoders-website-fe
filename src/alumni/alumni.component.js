@@ -9,19 +9,19 @@ export function Alumni(props) {
   useEffect(() => {
     if (isEmpty(alumni)) {
       fetch(Config.websiteServiceUrl + "alumni")
-      .then(res => res.json())
-      .then(json => setAlumni(json))
+        .then(res => res.json())
+        .then(json => setAlumni(json))
     }
   })
 
   return (
     <div>
-    <h3>Alumni</h3>
-    <List
-      bordered
-      dataSource={alumni}
-      renderItem={renderAlum}
-    />
+      <h3>Alumni</h3>
+      <List
+        bordered
+        dataSource={alumni}
+        renderItem={renderAlum}
+      />
     </div>
   );
 }
@@ -29,7 +29,7 @@ export function Alumni(props) {
 function renderAlum(alum) {
   return (
     <List.Item>
-    {alum.firstName} {alum.lastName}
+      {alum.firstName} {alum.lastName}
     </List.Item>
   )
 }
