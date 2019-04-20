@@ -7,12 +7,11 @@ import { Alumni } from "./alumni/alumni.component.js"
 import { Class } from "./admin/class.component.js"
 import { AlumniDetail } from "./alumni/alumni-detail.component.js";
 
-
 class App extends Component {
   render() {
     return (
       <>
-        <Router>
+         <Router>
           <Route path="/alumni" exact component={Alumni} />
           <Route path="/admin" exact component={Class} />
           <Route path="/alumni/:id" exact component={AlumniDetail} />
