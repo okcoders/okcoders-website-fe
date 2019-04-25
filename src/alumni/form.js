@@ -7,12 +7,14 @@ function Form(props) {
 
     const [firstName, setFirstName] = useState('John');
     const [lastName, setLastName] = useState('Doe');
-    const [email, setEmail] = useState('sample@gmail.com')
+    const [email, setEmail] = useState('sample@gmail.com');
+    const [gitHub, setGitHub] = useState('sample@gmail.com');
+    const [linkedIn, setLinkedIn] = useState('sample@gmail.com');
 
     return (
         <div>
             <form>
-                First Name: 
+                First Name:  
                 <input type="text" name="firstname" value={firstName} onChange={e => setFirstName(e.target.value)  }/>
                 <br/>
                 Last Name:
@@ -21,17 +23,31 @@ function Form(props) {
                 Email: 
                 <input type="text" name="email" value={email} onChange={e => setEmail(e.target.value)} />
                 <br/>
-                <input type="submit" value="Submit"/>
+                GitHub: 
+                <input type="text" name="gitHub" value={gitHub} onChange={e => setGitHub(e.target.value)} />
+                <br/>
+                LinkedIn: 
+                <input type="text" name="linkedin" value={linkedIn} onChange={e => setLinkedIn(e.target.value)} />
+                <br/>
+                <input type="submit" value="Submit" onSubmit="addToAlumniCollection()"/>
             </form>
         </div>
     );
 
 }
 
-
+/*
 function addToAlumniCollection() {
-    //This function will post the form data into the okcoders db
+    var alumni = {
+        firstname: firstName,
+        lastName: lastName,
+        email: email,
+        GitHub: gitHub,
+        LinkedIn: linkedIn
+    }
+    
 }
+*/
 
 export default Form;
 
