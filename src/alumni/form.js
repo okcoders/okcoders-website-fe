@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Config from '../config/app.local.conf.js'
-import { List } from 'antd'
-import { isEmpty } from 'lodash'
+import Axios from 'axios';
+//import Config from '../config/app.local.conf.js'
+//import { List } from 'antd'
+//import { isEmpty } from 'lodash'
 
 function Form(props) {
 
@@ -13,7 +14,9 @@ function Form(props) {
 
     return (
         <div>
-            <form>
+            <form onSubmit={event => {
+                    event.preventDefault();
+                    addToAlumniCollection(); }}>
                 First Name:  
                 <input type="text" name="firstname" value={firstName} onChange={e => setFirstName(e.target.value)  }/>
                 <br/>
@@ -29,25 +32,32 @@ function Form(props) {
                 LinkedIn: 
                 <input type="text" name="linkedin" value={linkedIn} onChange={e => setLinkedIn(e.target.value)} />
                 <br/>
-                <input type="submit" value="Submit" onSubmit="addToAlumniCollection()"/>
+                <input type="submit" value="Submit" />
             </form>
         </div>
     );
 
-}
 
-/*
-function addToAlumniCollection() {
-    var alumni = {
-        firstname: firstName,
-        lastName: lastName,
-        email: email,
-        GitHub: gitHub,
-        LinkedIn: linkedIn
-    }
-    
+function addToAlumniCollection(){
+
+        const newAlumni = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            github: gitHub,
+            linkedin: linkedIn
+        }
+
+        
+        Axios.post('http://localhost:9000/alumni', {newAlumni} )
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+        });
+        
+
 }
-*/
+}
 
 export default Form;
 

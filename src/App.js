@@ -15,6 +15,7 @@ class App extends Component {
           <Route path="/alumni" exact component={Alumni} />
           <Route path="/admin" exact component={Class} />
           <Route path="/alumni/:id" exact component={AlumniDetail} />
+          <Route path="/addAlumni" exact component={Form} />
         </Router>
       </>
     );

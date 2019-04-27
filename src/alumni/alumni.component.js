@@ -118,6 +118,7 @@ function renderAlum(alum) {
       description={alum.age}
     />
     </Card>
+    {alum.firstName} {alum.lastName} {alum.email}
     </List.Item>
     </>
   )
