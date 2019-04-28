@@ -65,8 +65,8 @@ export function Alumni(props) {
                 dataSource={alumni}
                 renderItem={renderAlum}
               />
-              <div style={{ textAlign: 'center' }}>
-              <Pagination showSizeChanger onShowSizeChange={onShowSizeChange} defaultCurrent={1} total={50} />
+              <div className="pagination">
+              <Pagination showSizeChanger onShowSizeChange={onShowSizeChange} defaultCurrent={1} total={alumni.length} />
               </div>
             </div>
           </Content>
@@ -89,14 +89,14 @@ function renderAlum(alum) {
     <Card
       style={{ width: 300 }}
       cover={<img alt="example" src={alum.avatar} />}
-      actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
+      actions={[<Icon type="linkedin" onClick={()=> window.open(alum.linkedin)} />, <Icon type="github" onClick={()=> window.open(alum.github)} />, <Icon onClick={()=> window.open(`http://localhost:3000/alumni/${alum.firstName}`)} type="idcard" />]}
     >
     <Meta
       avatar={<Avatar src={alum.avatar} />}
-      title={alum.card}
+      title={alum.firstName + " " + alum.lastName}
       description={alum.age}
     />
-    </Card>,
+    </Card>
     </List.Item>
     </>
   )
