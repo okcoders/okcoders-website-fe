@@ -118,7 +118,6 @@ function renderAlum(alum) {
       description={alum.age}
     />
     </Card>
-    {alum.firstName} {alum.lastName}
     </List.Item>
     </>
   )

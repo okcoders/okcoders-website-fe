@@ -9,17 +9,26 @@ import { List, Card, Icon, Avatar, Pagination, Layout, Menu, Dropdown, message }
 
 function CustomForm(props) {
 
-    const [firstName, setFirstName] = useState('John');
-    const [lastName, setLastName] = useState('Doe');
-    const [email, setEmail] = useState('sample@gmail.com');
-    const [birthday, setBirthday] = useState('mm/dd/yyyy');
-    const [gitHub, setGitHub] = useState('sample@gmail.com');
-    const [linkedIn, setLinkedIn] = useState('sample@gmail.com');
-    const [bio, setBio] = useState('tell me about yourself');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [birthday, setBirthday] = useState('');
+    const [gitHub, setGitHub] = useState('');
+    const [linkedIn, setLinkedIn] = useState('');
+    const [bio, setBio] = useState('');
 
     const { TextArea } = Input;
     const { Header, Content, Footer } = Layout;
 
+    function clearFields() {
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setBirthday('');
+        setGitHub('');
+        setLinkedIn('');
+        setBio('');
+    }
     const formItemLayout = {
         labelCol: {
             xs: { span: 24 },
@@ -67,6 +76,7 @@ function CustomForm(props) {
                     <Form {...formItemLayout} onSubmit={event => {
                         event.preventDefault();
                         addToAlumniCollection();
+                        clearFields();
                     }}>
                         <Form.Item
                             label="First Name:">
@@ -87,7 +97,7 @@ function CustomForm(props) {
                         </Form.Item>
 
                         <Form.Item
-                            label="Birthday:">
+                            label="Birthday:" extra="mm/dd/yyyy">
                             <Row gutter={8}>
                                 <Col span={12}>
                                     <Input type="text" name="birthday" value={birthday} onChange={e => setBirthday(e.target.value)} />
