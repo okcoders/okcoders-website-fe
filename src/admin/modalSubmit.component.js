@@ -1,93 +1,84 @@
-import React from 'react';
-import {
-    Button, Modal, Form, Input, Radio,
-} from 'antd';
+import React, { useState } from 'react';
+import { Button, Modal, Col, Row } from 'antd';
+import Axios from 'axios';
 
-const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
-    // eslint-disable-next-line
-    class extends React.Component {
-        render() {
-            const {
-                visible, onCancel, onCreate, form,
-            } = this.props;
-            const { getFieldDecorator } = form;
-            return (
-                <Modal
-                    visible={visible}
-                    title="Create a new collection"
-                    okText="Create"
-                    onCancel={onCancel}
-                    onOk={onCreate}
-                >
-                    <Form layout="vertical">
-                        <Form.Item label="Title">
-                            {getFieldDecorator('title', {
-                                rules: [{ required: true, message: 'Please input the title of collection!' }],
-                            })(
-                                <Input />
-                            )}
-                        </Form.Item>
-                        <Form.Item label="Description">
-                            {getFieldDecorator('description')(<Input type="textarea" />)}
-                        </Form.Item>
-                        <Form.Item className="collection-create-form_last-form-item">
-                            {getFieldDecorator('modifier', {
-                                initialValue: 'public',
-                            })(
-                                <Radio.Group>
-                                    <Radio value="public">Public</Radio>
-                                    <Radio value="private">Private</Radio>
-                                </Radio.Group>
-                            )}
-                        </Form.Item>
-                    </Form>
-                </Modal>
-            );
+
+
+
+function AddClassModal(props) {
+
+    const [visible, setVisible] = useState(false);
+
+    const [yearOfClass, setYearOfClass] = useState();
+    const [moduleNumber, setModuleNumber] = useState();
+    const [tags, setTags] = useState();
+    const [title, setTitle] = useState();
+    const [difficulty, setDifficuty] = useState();
+
+
+    const showModal = () => {
+        setVisible(true);
+    }
+
+    const handleCancel = () => {
+        setVisible(false);
+    }
+
+
+
+    return (
+        <div>
+            <Modal
+                visible={visible}
+                title="Create a new collection"
+                okText="Create"
+                onCancel={handleCancel}
+                onOk={addToClassCollection}
+            >
+                <Row>
+                    <Col span={6}>Title:</Col>
+                    <Col span={12}><input type='text' placeholder='Title' name='title' value={title} onChange={e => setTitle(e.target.value)}></input></Col>
+                </Row>
+                <Row>
+                    <Col span={6}>Year of Class:</Col>
+                    <Col span={16}><input type='text' placeholder='Year of Class' name='yearOfClass' value={yearOfClass} onChange={e => setYearOfClass(e.target.value)}></input></Col>
+                </Row>
+                <Row>
+                    <Col span={6}>Module Number:</Col>
+                    <Col span={12}><input type='text' placeholder='Module Number' name='moduleNumber' value={moduleNumber} onChange={e => setModuleNumber(e.target.value)}></input></Col>
+                </Row>
+                <Row>
+                    <Col span={6}>Difficulty:</Col>
+                    <Col span={12}><input type='text' placeholder='Difficulty' name='difficulty' value={difficulty} onChange={e => setDifficuty(e.target.value)}></input></Col >
+                </Row>
+                <Row>
+                    <Col span={6}>Language:</Col>
+                    <Col span={12}><input type='text' placeholder='Languages' name='tags' value={tags} onChange={e => setTags(e.target.value)}></input></Col>
+                </Row>
+            </Modal>
+            <Button type="primary" onClick={showModal}>New Collection</Button>
+        </div >
+    );
+
+    function addToClassCollection() {
+        const newClass = {
+            yearOfClass: yearOfClass,
+            moduleNumber: moduleNumber,
+            tags: tags,
+            title: title,
+            difficulty: difficulty
         }
-    }
-);
 
-class CollectionsPage extends React.Component {
-    state = {
-        visible: false,
-    };
 
-    showModal = () => {
-        this.setState({ visible: true });
-    }
+        Axios.post('http://localhost:9000/class', { newClass })
+            .then(res => {
+                setVisible(false);
+                console.log(res);
+                console.log(res.data);
+                props.onUpdate();
+            });
 
-    handleCancel = () => {
-        this.setState({ visible: false });
-    }
 
-    handleCreate = () => {
-        const form = this.formRef.props.form;
-        form.validateFields((err, values) => {
-            if (err) {
-                return;
-            }
-
-            console.log('Received values of form: ', values);
-            form.resetFields();
-            this.setState({ visible: false });
-        });
-    }
-
-    saveFormRef = (formRef) => {
-        this.formRef = formRef;
-    }
-
-    render() {
-        return (
-            <div>
-                <Button type="primary" onClick={this.showModal}>New Collection</Button>
-                <CollectionCreateForm
-                    wrappedComponentRef={this.saveFormRef}
-                    visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    onCreate={this.handleCreate}
-                />
-            </div>
-        );
     }
 }
+export default AddClassModal;
