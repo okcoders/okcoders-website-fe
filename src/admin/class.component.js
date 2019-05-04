@@ -20,7 +20,13 @@ function Class() {
     //alert('update');
     fetch(Config.websiteServiceUrl + "class")
       .then(res => res.json())
-      .then(json => setClasses(json))
+      .then(json => {
+        if (isEmpty(json)) {
+          return;
+        }
+        setClasses(json);
+
+      });
   }
 
   return (
@@ -64,7 +70,7 @@ function Class() {
             <span>
               {/* <a href="javascript:;">Edit {record.lastName}</a>
               <Divider type="vertical" /> */}
-              <a onClick={removeFromDb}>Delete</a>
+              <a onClick={() => removeFromDb(record._id)}>Delete</a>
             </span>
           )}
         />
@@ -75,8 +81,9 @@ function Class() {
     </div>
   );
 
-  function removeFromDb() {
-    Axios.delete('http://localhost:9000/class')
+  function removeFromDb(id) {
+    console.log(id);
+    Axios.delete(`http://localhost:9000/class/${id}`)
       .then(res => {
         loadData();
         console.log(res);
