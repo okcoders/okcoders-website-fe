@@ -15,7 +15,7 @@ class App extends Component {
         <Router>
           <Route path="/alumni" exact component={Alumni} />
           <Route path="/admin" exact component={Class} />
-          <Route path="/alumni/:firstName" exact component={Bio} />
+          <Route path="/alumni/:id" exact component={Bio} />
         </Router>
       </>
     );

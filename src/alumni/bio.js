@@ -3,20 +3,17 @@ import Config from '../config/app.local.conf.js'
 import { List, Card, Icon, Avatar, Layout, Menu } from 'antd'
 import { isEmpty } from 'lodash'
 import './alumni.component.css';
+
 const { Meta } = Card;
 const { Header, Content, Footer } = Layout;
 
 export function Bio(props) {
-    const [alumni, setAlumni] = useState([]);
-    const [firstName, setFirstName] = useState('Zach');
-    const [lastName, setLastName] = useState('Mays');
-    const [age, setAge] = useState('sample@gmail.com');
-    const [github, setGithub] = useState('sample@gmail.com');
-    const [linkedin, setLinkedin] = useState('sample@gmail.com');
+    console.log(props)
+    const [alumni, setAlumni] = useState({});
 
     useEffect(() => {
         if (isEmpty(alumni)) {
-          fetch(Config.websiteServiceUrl + `alumni`)
+          fetch(Config.websiteServiceUrl + `alumni/` + props.match.params.id)
           .then(res => res.json())
           .then(json => setAlumni(json))
         }
@@ -70,7 +67,7 @@ export function Bio(props) {
         <Card
         style={{ width: 300 }}
         cover={<img alt="example" src={alum.avatar} />}
-        actions={[<Icon type="linkedin" onClick={()=> window.open(alum.linkedin)} />, <Icon type="github" onClick={()=> window.open(alum.github)} />, <Icon onClick={()=> window.open(`http://localhost:3000/alumni/${alum.firstName}`)} type="idcard" />]}
+        actions={[<Icon type="linkedin" onClick={()=> window.open(alum.linkedin)} />, <Icon type="github" onClick={()=> window.open(alum.github)} />]}
         >
         <Meta
         avatar={<Avatar src={alum.avatar} />}

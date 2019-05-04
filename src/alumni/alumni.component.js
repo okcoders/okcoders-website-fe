@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf.js'
-import { List, Card, Icon, Avatar, Pagination, Layout, Menu, Dropdown, message } from 'antd'
+import { List, Card, Icon, Avatar, Pagination, Layout, Menu, Dropdown, message, Select } from 'antd'
 import { isEmpty } from 'lodash'
 import './alumni.component.css';
 const { Meta } = Card;
@@ -19,9 +19,20 @@ const menu = (
   </Menu>
 );
 
+const Option = Select.Option;
+
+// in case we need to loop through classes later
+// const children = [];
+// for (let i = 10; i < 36; i++) {
+//   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+// }
+
 export function Alumni(props) {
   const [alumni, setAlumni] = useState([]);
   
+  function handleChange(value) {
+    console.log(`selected ${value}`);
+  }
 
   useEffect(() => {
     if (isEmpty(alumni)) {
@@ -53,10 +64,28 @@ export function Alumni(props) {
                 Filters <Icon type="down"/>
               </a>
             </Dropdown>
-            <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
-              <h3>
+            <div>
+            <h3>
                 <img src="http://static1.squarespace.com/static/55085720e4b0813599644fae/5768549715d5db9b150af935/5936c2f7579fb37c3b11bf62/1496761369468/OKCoders.jpg?format=1500w" style={{ width: '25%' }}></img>
               </h3>
+              </div>
+              <div>
+              <Select
+                mode="tags"
+                className= "multiselect"
+                style={{ width: '25%' }}
+                placeholder="Tags Mode"
+                onChange={handleChange}
+                >
+                <Option key="HTML">HTML</Option>
+                <Option key="CSS">CSS</Option>
+                <Option key="JavaScript">JavaScript</Option>
+                <Option key="Backend">Backend</Option>
+                <Option key="React">React</Option>
+                <Option key="Analytics">Analytics</Option>
+              </Select>
+              </div>
+            <div style={{ background: '#fff', padding: 60, minHeight: 380 }}>
               <List
                 grid={{
                   gutter: 16, column: 3
@@ -89,7 +118,7 @@ function renderAlum(alum) {
     <Card
       style={{ width: 300 }}
       cover={<img alt="example" src={alum.avatar} />}
-      actions={[<Icon type="linkedin" onClick={()=> window.open(alum.linkedin)} />, <Icon type="github" onClick={()=> window.open(alum.github)} />, <Icon onClick={()=> window.open(`http://localhost:3000/alumni/${alum.firstName}`)} type="idcard" />]}
+      actions={[<Icon type="linkedin" onClick={()=> window.open(alum.linkedin)} />, <Icon type="github" onClick={()=> window.open(alum.github)} />, <Icon onClick={()=> window.open(`http://localhost:3000/alumni/${alum._id}`)} type="idcard" />]}
     >
     <Meta
       avatar={<Avatar src={alum.avatar} />}
