@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf.js'
-import { List, Card, Icon, Avatar, Layout, Menu, notification } from 'antd'
+import { Card, Icon, Avatar, Layout, Menu, notification } from 'antd'
 import { isEmpty } from 'lodash'
 import './alumni.component.css';
 
 const { Meta } = Card;
 const { Header, Content, Footer } = Layout;
 
-export function Bio(props) {
+export function AlumniDetail(props) {
     console.log(props)
     const [alumni, setAlumni] = useState({});
     const [error, setError] = useState(false);
@@ -52,14 +52,16 @@ export function Bio(props) {
 
                 <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
                 <h3>
-                    <img src="http://static1.squarespace.com/static/55085720e4b0813599644fae/5768549715d5db9b150af935/5936c2f7579fb37c3b11bf62/1496761369468/OKCoders.jpg?format=1500w" style={{ width: '25%' }}></img>
+                    <img src="http://static1.squarespace.com/static/55085720e4b0813599644fae/5768549715d5db9b150af935/5936c2f7579fb37c3b11bf62/1496761369468/OKCoders.jpg?format=1500w" 
+                    style={{ width: '25%' }}>
+                    </img>
                 </h3>
                 {!error && <Card
                     style={{ width: 300 }}
                     cover={<img alt="example" src={alumni.avatar} />}
                     actions={[
-                    <Icon type="linkedin" onClick={()=> window.open(alumni.linkedin)} />, 
-                    <Icon type="github" onClick={()=> window.open(alumni.github)} />]}
+                        <Icon type="linkedin" onClick={()=> window.open(alumni.linkedin)} />, 
+                        <Icon type="github" onClick={()=> window.open(alumni.github)} />]}
                     >
                     <Meta
                     avatar={<Avatar src={alumni.avatar} />}
@@ -77,28 +79,4 @@ export function Bio(props) {
         </>
     );
     }
-
-    function renderAlumBio(alum) {
-    return (
-        <>
-        <Card
-        style={{ width: 300 }}
-        cover={<img alt="example" src={alum.avatar} />}
-        actions={[
-            <Icon 
-                type="linkedin" onClick={()=> window.open(alum.linkedin)} />, 
-            <Icon 
-                type="github" onClick={()=> window.open(alum.github)} />]}
-        >
-        <Meta
-        avatar={<Avatar src={alum.avatar} />}
-        title={alum.firstName + " " + alum.lastName}
-        description={alum.age}
-        />
-        </Card>
-        </>
-    )
-    }
-
-export default Bio;
 
