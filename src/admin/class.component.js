@@ -5,7 +5,6 @@ import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
 import Axios from 'axios';
 
-
 function Class() {
   const [classes, setClasses] = useState([]);
   const { Column } = Table;
@@ -17,15 +16,13 @@ function Class() {
   })
 
   const loadData = () => {
-    //alert('update');
-    fetch(Config.websiteServiceUrl + "class")
+    fetch(`${Config.websiteServiceUrl}class`)
       .then(res => res.json())
       .then(json => {
-        if (isEmpty(json)) {
+        if (isEmpty(json) && isEmpty(classes)) {
           return;
         }
         setClasses(json);
-
       });
   }
 
@@ -75,20 +72,18 @@ function Class() {
           )}
         />
       </Table>
-
       <AddClassModal onUpdate={loadData} />
-
     </div>
   );
 
   function removeFromDb(id) {
-    console.log(id);
-    Axios.delete(`http://localhost:9000/class/${id}`)
+    fetch(`${Config.websiteServiceUrl}class/${id}`, {
+      method: `DELETE`
+    })
+      .catch(function (error) { console.log(error); })
       .then(res => {
         loadData();
-        console.log(res);
-        console.log(res.data);
-      });
+      })
   }
 }
 

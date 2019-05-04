@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
+import Config from '../config/app.local.conf';
 import { Button, Modal, Col, Row } from 'antd';
-import Axios from 'axios';
-
-
-
 
 function AddClassModal(props) {
 
     const [visible, setVisible] = useState(false);
-
     const [yearOfClass, setYearOfClass] = useState();
     const [moduleNumber, setModuleNumber] = useState();
     const [tags, setTags] = useState();
     const [title, setTitle] = useState();
     const [difficulty, setDifficuty] = useState();
-
 
     const showModal = () => {
         setVisible(true);
@@ -24,13 +19,11 @@ function AddClassModal(props) {
         setVisible(false);
     }
 
-
-
     return (
         <div>
             <Modal
                 visible={visible}
-                title="Create a new collection"
+                title="Create a new class"
                 okText="Create"
                 onCancel={handleCancel}
                 onOk={addToClassCollection}
@@ -60,6 +53,14 @@ function AddClassModal(props) {
         </div >
     );
 
+    function clearFields() {
+        setYearOfClass('');
+        setDifficuty('');
+        setModuleNumber('');
+        setTags('');
+        setTitle('');
+    }
+
     function addToClassCollection() {
         const newClass = {
             yearOfClass: yearOfClass,
@@ -69,16 +70,17 @@ function AddClassModal(props) {
             difficulty: difficulty
         }
 
-
-        Axios.post('http://localhost:9000/class', { newClass })
+        fetch(`${Config.websiteServiceUrl}class`, {
+            method: `POST`,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newClass)
+        })
+            .catch(function (error) { console.log(error); })
             .then(res => {
                 setVisible(false);
-                console.log(res);
-                console.log(res.data);
                 props.onUpdate();
+                clearFields();
             });
-
-
     }
 }
 export default AddClassModal;
