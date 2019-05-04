@@ -1,0 +1,10 @@
+.pagination {
+    text-align: center;
+  }
+
+.multiselect {
+    float: right;
+    padding: 48;
+    margin: 24;
+}
+
