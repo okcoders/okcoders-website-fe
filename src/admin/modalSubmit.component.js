@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Config from '../config/app.local.conf';
-import { Button, Modal, Col, Row } from 'antd';
+import { Button, Modal, Col, Row, notification } from 'antd';
 
 function AddClassModal(props) {
 
@@ -61,6 +61,8 @@ function AddClassModal(props) {
         setTitle('');
     }
 
+
+
     function addToClassCollection() {
         const newClass = {
             yearOfClass: yearOfClass,
@@ -75,11 +77,16 @@ function AddClassModal(props) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newClass)
         })
-            .catch(function (error) { console.log(error); })
             .then(res => {
+                if (!res.ok) {
+                    throw Error(res.statusText);
+                }
                 setVisible(false);
                 props.onUpdate();
                 clearFields();
+            })
+            .catch(err => {
+                props.onError(err)
             });
     }
 }

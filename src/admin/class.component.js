@@ -1,9 +1,8 @@
-import React, { useState, useEffect, ReactDOM } from 'react';
+import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf';
-import { Table, Divider, Tag } from 'antd';
+import { Table, Divider, Tag, notification } from 'antd';
 import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
-import Axios from 'axios';
 
 function Class() {
   const [classes, setClasses] = useState([]);
@@ -72,19 +71,35 @@ function Class() {
           )}
         />
       </Table>
-      <AddClassModal onUpdate={loadData} />
+      <AddClassModal onUpdate={loadData} onError={handleError} />
     </div>
   );
+
+  function handleError(err) {
+    notification['error']({
+      message: 'Oh No! Something went wrong!',
+      description: `Sorry about that! It will be back up and running in a jiffy! We were unable to add your class to the list.`
+    });
+  }
 
   function removeFromDb(id) {
     fetch(`${Config.websiteServiceUrl}class/${id}`, {
       method: `DELETE`
     })
-      .catch(function (error) { console.log(error); })
       .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
         loadData();
       })
+      .catch(err => {
+        notification['error']({
+          message: 'Oh No! Something went wrong!',
+          description: `Sorry about that! This class could not be removed from the list`
+        });
+      });
   }
 }
+
 
 export { Class };
