@@ -6,7 +6,7 @@ import "antd/dist/antd.css";
 import { Alumni } from "./alumni/alumni.component.js"
 import { Class } from "./admin/class.component.js"
 import { AlumniDetail } from "./alumni/alumni-detail.component.js";
-import CustomForm from './alumni/form.js';
+import AddAlumniForm from './alumni/form.js';
 
 class App extends Component {
   render() {
@@ -16,7 +16,7 @@ class App extends Component {
           <Route path="/alumni" exact component={Alumni} />
           <Route path="/admin" exact component={Class} />
           <Route path="/alumni/:id" exact component={AlumniDetail} />
-          <Route path="/addAlumni" exact component={CustomForm} />
+          <Route path="/addAlumni" exact component={AddAlumniForm} />
         </Router>
       </>
     );

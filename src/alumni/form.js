@@ -4,10 +4,11 @@ import {
     Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete,
 } from 'antd';
 import { List, Card, Icon, Avatar, Pagination, Layout, Menu, Dropdown, message } from 'antd';
+import Config from '../config/app.local.conf.js'
 
 
 
-function CustomForm(props) {
+function AddAlumniForm(props) {
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -172,17 +173,14 @@ function CustomForm(props) {
             birthday: birthday
         }
 
-
-        Axios.post('http://localhost:9000/alumni', { newAlumni })
+        
+        Axios.post(Config.websiteServiceUrl + "alumni", { newAlumni })
             .then(res => {
                 console.log(res);
                 console.log(res.data);
             });
 
-
     }
 }
 
-export default CustomForm;
-
-
+export default AddAlumniForm;
