@@ -16,13 +16,24 @@ function Class() {
 
   const loadData = () => {
     fetch(`${Config.websiteServiceUrl}class`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        res.json()
+      })
       .then(json => {
         if (isEmpty(json) && isEmpty(classes)) {
           return;
         }
         setClasses(json);
-      });
+      })
+      .catch(err => {
+        notification['error']({
+          message: 'Oh No! Something went wrong!',
+          description: `Sorry about that! The list of classes was not found.`
+        });
+      })
   }
 
   return (
