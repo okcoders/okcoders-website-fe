@@ -57,7 +57,9 @@ export function Bio(props) {
                 {!error && <Card
                     style={{ width: 300 }}
                     cover={<img alt="example" src={alumni.avatar} />}
-                    actions={[<Icon type="linkedin" onClick={()=> window.open(alumni.linkedin)} />, <Icon type="github" onClick={()=> window.open(alumni.github)} />]}
+                    actions={[
+                    <Icon type="linkedin" onClick={()=> window.open(alumni.linkedin)} />, 
+                    <Icon type="github" onClick={()=> window.open(alumni.github)} />]}
                     >
                     <Meta
                     avatar={<Avatar src={alumni.avatar} />}
@@ -82,7 +84,11 @@ export function Bio(props) {
         <Card
         style={{ width: 300 }}
         cover={<img alt="example" src={alum.avatar} />}
-        actions={[<Icon type="linkedin" onClick={()=> window.open(alum.linkedin)} />, <Icon type="github" onClick={()=> window.open(alum.github)} />]}
+        actions={[
+            <Icon 
+                type="linkedin" onClick={()=> window.open(alum.linkedin)} />, 
+            <Icon 
+                type="github" onClick={()=> window.open(alum.github)} />]}
         >
         <Meta
         avatar={<Avatar src={alum.avatar} />}
