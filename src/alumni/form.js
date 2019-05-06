@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import {
-    Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete,
+    Form, Input, Row, Col, Button, Layout, Menu, notification
 } from 'antd';
-import { List, Card, Icon, Avatar, Pagination, Layout, Menu, Dropdown, message } from 'antd';
 import Config from '../config/app.local.conf.js'
 
 
@@ -20,6 +19,7 @@ function AddAlumniForm(props) {
 
     const { TextArea } = Input;
     const { Header, Content, Footer } = Layout;
+
 
     function clearFields() {
         setFirstName('');
@@ -74,10 +74,10 @@ function AddAlumniForm(props) {
                     <br />
                     <br />
                     <br />
-                    <Form {...formItemLayout} onSubmit={event => {
+                    <Form {...formItemLayout} onSubmit={(event, success) => {
+                        success = true;
                         event.preventDefault();
                         addToAlumniCollection();
-                        clearFields();
                     }}>
                         <Form.Item
                             label="First Name:">
@@ -161,8 +161,7 @@ function AddAlumniForm(props) {
     );
 
 
-    function addToAlumniCollection() {
-
+    function addToAlumniCollection(suc) {
         const newAlumni = {
             firstName: firstName,
             lastName: lastName,
@@ -173,14 +172,24 @@ function AddAlumniForm(props) {
             birthday: birthday
         }
 
-        
         Axios.post(Config.websiteServiceUrl + "alumni", { newAlumni })
             .then(res => {
                 console.log(res);
                 console.log(res.data);
+                clearFields();
+            }).catch(function(error) {
+                console.log(JSON.stringify(error));
+                displayNotificationError(error.response.data);
             });
-
     }
+    
+    function displayNotificationError(error) {
+        notification["error"]({
+            message: 'Add alumni failed.',
+            description: error,
+        });
+        console.log(error);
+    };
 }
 
 export default AddAlumniForm;
