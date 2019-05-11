@@ -3,6 +3,7 @@ import Config from '../config/app.local.conf';
 import { Table, Divider, Tag, notification } from 'antd';
 import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
+import EditClassModal from './editModal.component';
 
 function Class() {
   const [classes, setClasses] = useState([]);
@@ -20,7 +21,7 @@ function Class() {
         if (!res.ok) {
           throw Error(res.statusText);
         }
-        res.json()
+        return res.json()
       })
       .then(json => {
         if (isEmpty(json) && isEmpty(classes)) {
@@ -75,8 +76,8 @@ function Class() {
           key="action"
           render={(text, record) => (
             <span>
-              {/* <a href="javascript:;">Edit {record.lastName}</a>
-              <Divider type="vertical" /> */}
+              <EditClassModal record={record} onUpdate={loadData} onError={handleError} />
+              <Divider type="vertical" />
               <a onClick={() => removeFromDb(record._id)}>Delete</a>
             </span>
           )}
@@ -91,6 +92,10 @@ function Class() {
       message: 'Oh No! Something went wrong!',
       description: `Sorry about that! It will be back up and running in a jiffy! We were unable to add your class to the list.`
     });
+  }
+
+  function editRecord(record) {
+
   }
 
   function removeFromDb(id) {
