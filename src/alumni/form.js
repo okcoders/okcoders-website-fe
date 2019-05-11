@@ -185,7 +185,7 @@ function AddAlumniForm(props) {
     
     function displayNotificationError(error) {
         notification["error"]({
-            message: 'Add alumni failed.',
+            message: 'Please populate folloiwng fields:',
             description: error,
         });
         console.log(error);
