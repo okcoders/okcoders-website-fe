@@ -3,6 +3,7 @@ import Config from '../config/app.local.conf';
 import { Table, Divider, Tag, notification } from 'antd';
 import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
+import EditClassModal from './editModal.component';
 
 function Class() {
   const [classes, setClasses] = useState([]);
@@ -75,7 +76,7 @@ function Class() {
           key="action"
           render={(text, record) => (
             <span>
-              <a onClick={() => editRecord(record)}>Edit</a>
+              <EditClassModal record={record} onUpdate={loadData} onError={handleError} />
               <Divider type="vertical" />
               <a onClick={() => removeFromDb(record._id)}>Delete</a>
             </span>

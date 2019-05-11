@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import Config from '../config/app.local.conf';
 import { Button, Modal, Col, Row } from 'antd';
 
-function AddClassModal(props) {
+function EditClassModal(props) {
 
     const [visible, setVisible] = useState(false);
-    const [yearOfClass, setYearOfClass] = useState();
-    const [moduleNumber, setModuleNumber] = useState();
-    const [tags, setTags] = useState();
-    const [title, setTitle] = useState();
-    const [difficulty, setDifficuty] = useState();
+    const [id] = useState(props.record._id);
+    const [yearOfClass, setYearOfClass] = useState(props.record.yearOfClass);
+    const [moduleNumber, setModuleNumber] = useState(props.record.moduleNumber);
+    const [tags, setTags] = useState(props.record.languageTags.join(', '));
+    const [title, setTitle] = useState(props.record.title);
+    const [difficulty, setDifficuty] = useState(props.record.difficulty);
 
     const showModal = () => {
         setVisible(true);
@@ -20,13 +21,18 @@ function AddClassModal(props) {
     }
 
     return (
-        <div>
+        <span>
             <Modal
                 visible={visible}
                 title="Create a new class"
                 okText="Create"
                 onCancel={handleCancel}
-                onOk={addToClassCollection}
+                footer={[
+                    <Button key="back" onClick={handleCancel}>Cancel</Button>,
+                    <Button key="submit" type="primary" onClick={UpdateClass}>
+                        Update
+                    </Button>,
+                ]}
             >
                 <Row>
                     <Col span={6}>Title:</Col>
@@ -49,8 +55,8 @@ function AddClassModal(props) {
                     <Col span={12}><input type='text' placeholder='Languages' name='tags' value={tags} onChange={e => setTags(e.target.value)}></input></Col>
                 </Row>
             </Modal>
-            <Button type="primary" onClick={showModal}>New Collection</Button>
-        </div >
+            <a onClick={showModal}>Edit</a>
+        </span>
     );
 
     function clearFields() {
@@ -63,8 +69,9 @@ function AddClassModal(props) {
 
 
 
-    function addToClassCollection() {
-        const newClass = {
+    function UpdateClass() {
+        const record = {
+            _id: id,
             yearOfClass: yearOfClass,
             moduleNumber: moduleNumber,
             tags: tags,
@@ -73,9 +80,9 @@ function AddClassModal(props) {
         }
 
         fetch(`${Config.websiteServiceUrl}class`, {
-            method: `POST`,
+            method: `PUT`,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newClass)
+            body: JSON.stringify(record)
         })
             .then(res => {
                 if (!res.ok) {
@@ -90,4 +97,4 @@ function AddClassModal(props) {
             });
     }
 }
-export default AddClassModal;
+export default EditClassModal;
