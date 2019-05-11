@@ -20,7 +20,7 @@ function Class() {
         if (!res.ok) {
           throw Error(res.statusText);
         }
-        res.json()
+        return res.json()
       })
       .then(json => {
         if (isEmpty(json) && isEmpty(classes)) {
@@ -75,8 +75,8 @@ function Class() {
           key="action"
           render={(text, record) => (
             <span>
-              {/* <a href="javascript:;">Edit {record.lastName}</a>
-              <Divider type="vertical" /> */}
+              <a onClick={() => editRecord(record)}>Edit</a>
+              <Divider type="vertical" />
               <a onClick={() => removeFromDb(record._id)}>Delete</a>
             </span>
           )}
@@ -91,6 +91,10 @@ function Class() {
       message: 'Oh No! Something went wrong!',
       description: `Sorry about that! It will be back up and running in a jiffy! We were unable to add your class to the list.`
     });
+  }
+
+  function editRecord(record) {
+
   }
 
   function removeFromDb(id) {
