@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Config from '../config/app.local.conf';
-import { Button, Modal, Col, Row } from 'antd';
+import { Button, Modal, Form, Input } from 'antd';
 
 function EditClassModal(props) {
 
@@ -20,6 +20,17 @@ function EditClassModal(props) {
         setVisible(false);
     }
 
+    const formItemLayout = {
+        labelCol: {
+            xs: { span: 24 },
+            sm: { span: 8 },
+        },
+        wrapperCol: {
+            xs: { span: 24 },
+            sm: { span: 16 },
+        },
+    };
+
     return (
         <span>
             <Modal
@@ -34,40 +45,18 @@ function EditClassModal(props) {
                     </Button>,
                 ]}
             >
-                <Row>
-                    <Col span={6}>Title:</Col>
-                    <Col span={12}><input type='text' placeholder='Title' name='title' value={title} onChange={e => setTitle(e.target.value)}></input></Col>
-                </Row>
-                <Row>
-                    <Col span={6}>Year of Class:</Col>
-                    <Col span={16}><input type='text' placeholder='Year of Class' name='yearOfClass' value={yearOfClass} onChange={e => setYearOfClass(e.target.value)}></input></Col>
-                </Row>
-                <Row>
-                    <Col span={6}>Module Number:</Col>
-                    <Col span={12}><input type='text' placeholder='Module Number' name='moduleNumber' value={moduleNumber} onChange={e => setModuleNumber(e.target.value)}></input></Col>
-                </Row>
-                <Row>
-                    <Col span={6}>Difficulty:</Col>
-                    <Col span={12}><input type='text' placeholder='Difficulty' name='difficulty' value={difficulty} onChange={e => setDifficuty(e.target.value)}></input></Col >
-                </Row>
-                <Row>
-                    <Col span={6}>Language:</Col>
-                    <Col span={12}><input type='text' placeholder='Languages' name='tags' value={tags} onChange={e => setTags(e.target.value)}></input></Col>
-                </Row>
+                <Form {...formItemLayout}>
+
+                    <Form.Item label="Title"><Input type='text' name='title' value={title} onChange={e => setTitle(e.target.value)}></Input></Form.Item>
+                    <Form.Item label="Year of Class"><Input type='text' name='yearOfClass' value={yearOfClass} onChange={e => setYearOfClass(e.target.value)}></Input></Form.Item>
+                    <Form.Item label="Module Number"><Input type='text' name='moduleNumber' value={moduleNumber} onChange={e => setModuleNumber(e.target.value)}></Input></Form.Item>
+                    <Form.Item label="Difficulty"><Input type='text' name='difficulty' value={difficulty} onChange={e => setDifficuty(e.target.value)}></Input></Form.Item>
+                    <Form.Item label="Languages"><Input type='text' name='tags' value={tags} onChange={e => setTags(e.target.value)}></Input></Form.Item>
+                </Form>
             </Modal>
             <a onClick={showModal}>Edit</a>
         </span>
     );
-
-    function clearFields() {
-        setYearOfClass('');
-        setDifficuty('');
-        setModuleNumber('');
-        setTags('');
-        setTitle('');
-    }
-
-
 
     function UpdateClass() {
         const record = {
@@ -90,7 +79,6 @@ function EditClassModal(props) {
                 }
                 setVisible(false);
                 props.onUpdate();
-                clearFields();
             })
             .catch(err => {
                 props.onError(err)
