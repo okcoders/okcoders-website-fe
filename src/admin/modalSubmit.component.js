@@ -51,7 +51,7 @@ function AddClassModal(props) {
                             mode="multiple"
                             style={{ width: '100%' }}
                             placeholder="Please select"
-                            defaultValue={[]}
+                            value={languages.map(l => l._id)}
                             onChange={handleChange}
                         >
                             {props.languages.map(l => <Option key={l._id}>{l.language}</Option>)}
@@ -63,7 +63,8 @@ function AddClassModal(props) {
     );
 
     function handleChange(ids) {
-        setLanguages(ids);
+        const langs = props.languages.filter(l => ids.includes(l._id));
+        setLanguages(langs);
     }
 
     function clearFields() {
@@ -73,8 +74,6 @@ function AddClassModal(props) {
         setTitle('');
         setLanguages([]);
     }
-
-
 
     function addToClassCollection() {
         const newClass = {

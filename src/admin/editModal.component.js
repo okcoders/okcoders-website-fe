@@ -10,7 +10,7 @@ function EditClassModal(props) {
     const [moduleNumber, setModuleNumber] = useState(props.record.moduleNumber);
     const [title, setTitle] = useState(props.record.title);
     const [difficulty, setDifficuty] = useState(props.record.difficulty);
-    const [languages, setLanguages] = useState([]);
+    const [languages, setLanguages] = useState(props.record.languages);
 
     const Option = Select.Option;
 
@@ -34,7 +34,8 @@ function EditClassModal(props) {
     };
 
     function handleChange(ids) {
-        setLanguages(ids);
+        const langs = props.languages.filter(l => ids.includes(l._id));
+        setLanguages(langs);
     }
 
     return (
@@ -61,10 +62,10 @@ function EditClassModal(props) {
                             mode="multiple"
                             style={{ width: '100%' }}
                             placeholder="Please select"
-                            defaultValue={languages}
+                            value={languages.map(l => l._id)}
                             onChange={handleChange}
                         >
-                            {props.languages.map(l => <Option key={l._id} value={languages}>{l.language}</Option>)}
+                            {props.languages.map(l => <Option key={l._id}>{l.language}</Option>)}
                         </Select>
                     </Form.Item>
                 </Form>

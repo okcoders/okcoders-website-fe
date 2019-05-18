@@ -100,10 +100,6 @@ function Class() {
     });
   }
 
-  function editRecord(record) {
-
-  }
-
   function removeFromDb(id) {
     fetch(`${Config.websiteServiceUrl}class/${id}`, {
       method: `DELETE`
