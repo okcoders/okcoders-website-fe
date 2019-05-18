@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import Config from '../config/app.local.conf';
-import { Button, Modal, Input, Form } from 'antd';
+import { Button, Modal, Input, Form, Select } from 'antd';
 
 function AddClassModal(props) {
 
     const [visible, setVisible] = useState(false);
     const [yearOfClass, setYearOfClass] = useState();
     const [moduleNumber, setModuleNumber] = useState();
-    const [tags, setTags] = useState();
     const [title, setTitle] = useState();
     const [difficulty, setDifficuty] = useState();
+    const [languages, setLanguages] = useState([]);
+
+    const Option = Select.Option;
 
     const showModal = () => {
         setVisible(true);
@@ -40,24 +42,36 @@ function AddClassModal(props) {
                 onOk={addToClassCollection}
             >
                 <Form {...formItemLayout}>
-
                     <Form.Item label="Title"><Input type='text' name='title' value={title} onChange={e => setTitle(e.target.value)}></Input></Form.Item>
                     <Form.Item label="Year of Class"><Input type='text' name='yearOfClass' value={yearOfClass} onChange={e => setYearOfClass(e.target.value)}></Input></Form.Item>
                     <Form.Item label="Module Number"><Input type='text' name='moduleNumber' value={moduleNumber} onChange={e => setModuleNumber(e.target.value)}></Input></Form.Item>
                     <Form.Item label="Difficulty"><Input type='text' name='difficulty' value={difficulty} onChange={e => setDifficuty(e.target.value)}></Input></Form.Item>
-                    <Form.Item label="Languages"><Input type='text' name='tags' value={tags} onChange={e => setTags(e.target.value)}></Input></Form.Item>
+                    <Form.Item label="Languages">
+                        <Select
+                            mode="multiple"
+                            style={{ width: '100%' }}
+                            placeholder="Please select"
+                            defaultValue={[]}
+                            onChange={handleChange}
+                        >
+                            {props.languages.map(l => <Option key={l._id}>{l.language}</Option>)}
+                        </Select></Form.Item>
                 </Form>
             </Modal>
             <Button type="primary" onClick={showModal}>New Collection</Button>
         </div >
     );
 
+    function handleChange(ids) {
+        setLanguages(ids);
+    }
+
     function clearFields() {
         setYearOfClass('');
         setDifficuty('');
         setModuleNumber('');
-        setTags('');
         setTitle('');
+        setLanguages([]);
     }
 
 
@@ -66,7 +80,7 @@ function AddClassModal(props) {
         const newClass = {
             yearOfClass: yearOfClass,
             moduleNumber: moduleNumber,
-            tags: tags,
+            languages: languages,
             title: title,
             difficulty: difficulty
         }
