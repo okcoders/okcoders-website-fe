@@ -1,22 +1,27 @@
 import React from 'react';
-import { Layout, Menu } from 'antd'
+import { Link } from 'react-router-dom';
+import { Menu } from 'antd'
 import './alumni.component.css';
-const { Header } = Layout;
 
 export function NavBar(props) {
+
     return (
         <>
-          <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-            <div className="logo" />
-            <Menu
-              theme="dark"
-              mode="horizontal"
-              defaultSelectedKeys={['1']}
-              style={{ lineHeight: '64px' }}
-            >
-              <Menu.Item key="1">Alumni</Menu.Item>
-              <Menu.Item key="2">Submit</Menu.Item>
-              <Menu.Item key="3">Admin</Menu.Item>
-            </Menu>
-          </Header>
-          </>)}
+          <div className="logo" />
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            selectedKeys={[props.location.pathname]}
+            style={{ lineHeight: '64px' }}
+          >
+            <Menu.Item key="/alumni">
+              <Link to="/alumni">Alumni</Link>
+            </Menu.Item>
+            <Menu.Item key="/addAlumni">
+              <Link to="/addAlumni">Submit</Link>
+            </Menu.Item>
+            <Menu.Item key="/admin">
+              <Link to="/admin">Admin</Link>
+            </Menu.Item>
+          </Menu>
+        </>)}

@@ -13,7 +13,7 @@ export function AlumniCard(props) {
             actions={[
                 <Icon type="linkedin" onClick={()=> window.open(props.alumni.linkedin)} />, 
                 <Icon type="github" onClick={()=> window.open(props.alumni.github)} />, 
-                <Icon onClick={()=> window.open(props.alumni._id)} type="idcard" />]}
+                <Icon onClick={()=> window.open("alumni/" + props.alumni._id)} type="idcard" />]}
         >
         <Meta
             avatar={<Avatar src={props.alumni.avatar} />}

@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf.js'
-import { Card, Icon, Avatar, Layout, Menu, notification } from 'antd'
+import { Menu, notification } from 'antd'
 import { isEmpty } from 'lodash'
 import './alumni.component.css';
-import { NavBar } from './NavBar.component';
 import { Logo } from './OKCoderLogo.component';
 import { AlumniCard } from './AlumniCard.component'
-
-const { Header, Content, Footer } = Layout;
 
 export function AlumniDetail(props) {
     console.log(props)
@@ -36,19 +33,11 @@ export function AlumniDetail(props) {
 
     return (
         <>
-            <Layout>
-                <NavBar/>
-                <Content style={{ padding: '0 50px', marginTop: 64 }}>
-                    <Logo/>
-                    <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
-                    {!error && <AlumniCard alumni={alumni}/>
-                    }
-                    </div>
-                </Content>
-                <Footer style={{ textAlign: 'center' }}>
-                    Ant Design ©2018 Created by Ant UED
-                </Footer>
-            </Layout>
+            <Logo/>
+            <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
+                {!error && <AlumniCard alumni={alumni}/>
+                }
+            </div>
         </>
     );
     }

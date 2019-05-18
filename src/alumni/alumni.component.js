@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf.js'
-import { List, Card, Icon, Avatar, Pagination, Layout, Menu, Select } from 'antd'
+import { List, Pagination, Menu, Select } from 'antd'
 import { isEmpty } from 'lodash'
 import './alumni.component.css';
-import { NavBar } from './NavBar.component'
 import { Logo } from './OKCoderLogo.component'
 import { AlumniCard } from './AlumniCard.component'
-const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
 
 // in case we need to loop through classes later
@@ -32,9 +30,6 @@ export function Alumni(props) {
 
   return (
       <>
-        <Layout>
-          <NavBar/>
-          <Content style={{ padding: '0 50px', marginTop: 64 }}>
             <Logo/>
               <div>
               <Select
@@ -69,11 +64,6 @@ export function Alumni(props) {
                 total={alumni.length} />
               </div>
             </div>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©2018 Created by Ant UED
-          </Footer>
-        </Layout>
     </>
   );
 }
