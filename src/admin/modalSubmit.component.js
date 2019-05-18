@@ -58,7 +58,7 @@ function AddClassModal(props) {
                         </Select></Form.Item>
                 </Form>
             </Modal>
-            <Button type="primary" onClick={showModal}>New Collection</Button>
+            <Button type="primary" onClick={showModal}>New Class</Button>
         </div >
     );
 
