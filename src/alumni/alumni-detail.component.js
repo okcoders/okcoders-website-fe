@@ -3,8 +3,10 @@ import Config from '../config/app.local.conf.js'
 import { Card, Icon, Avatar, Layout, Menu, notification } from 'antd'
 import { isEmpty } from 'lodash'
 import './alumni.component.css';
+import { NavBar } from './NavBar.component';
+import { Logo } from './OKCoderLogo.component';
+import { AlumniCard } from './AlumniCard.component'
 
-const { Meta } = Card;
 const { Header, Content, Footer } = Layout;
 
 export function AlumniDetail(props) {
@@ -35,46 +37,17 @@ export function AlumniDetail(props) {
     return (
         <>
             <Layout>
-            <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-                <div className="logo" />
-                <Menu
-                theme="dark"
-                mode="horizontal"
-                defaultSelectedKeys={['1']}
-                style={{ lineHeight: '64px' }}
-                >
-                <Menu.Item key="1">Alumni</Menu.Item>
-                <Menu.Item key="2">Submit</Menu.Item>
-                <Menu.Item key="3">Verification</Menu.Item>
-                </Menu>
-            </Header>
-            <Content style={{ padding: '0 50px', marginTop: 64 }}>
-
-                <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
-                <h3>
-                    <img src="http://static1.squarespace.com/static/55085720e4b0813599644fae/5768549715d5db9b150af935/5936c2f7579fb37c3b11bf62/1496761369468/OKCoders.jpg?format=1500w" 
-                    style={{ width: '25%' }}>
-                    </img>
-                </h3>
-                {!error && <Card
-                    style={{ width: 300 }}
-                    cover={<img alt="example" src={alumni.avatar} />}
-                    actions={[
-                        <Icon type="linkedin" onClick={()=> window.open(alumni.linkedin)} />, 
-                        <Icon type="github" onClick={()=> window.open(alumni.github)} />]}
-                    >
-                    <Meta
-                    avatar={<Avatar src={alumni.avatar} />}
-                    title={alumni.firstName + " " + alumni.lastName}
-                    description={alumni.age}
-                    />
-                    </Card>
-                }
-                </div>
-            </Content>
-            <Footer style={{ textAlign: 'center' }}>
-                Ant Design ©2018 Created by Ant UED
-            </Footer>
+                <NavBar/>
+                <Content style={{ padding: '0 50px', marginTop: 64 }}>
+                    <Logo/>
+                    <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
+                    {!error && <AlumniCard alumni={alumni}/>
+                    }
+                    </div>
+                </Content>
+                <Footer style={{ textAlign: 'center' }}>
+                    Ant Design ©2018 Created by Ant UED
+                </Footer>
             </Layout>
         </>
     );
