@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Config from '../config/app.local.conf';
-import { Button, Modal, Form, Input } from 'antd';
+import { Button, Modal, Form, Input, Select } from 'antd';
 
 function EditClassModal(props) {
 
@@ -8,9 +8,11 @@ function EditClassModal(props) {
     const [id] = useState(props.record._id);
     const [yearOfClass, setYearOfClass] = useState(props.record.yearOfClass);
     const [moduleNumber, setModuleNumber] = useState(props.record.moduleNumber);
-    const [tags, setTags] = useState(props.record.languageTags.join(', '));
     const [title, setTitle] = useState(props.record.title);
     const [difficulty, setDifficuty] = useState(props.record.difficulty);
+    const [languages, setLanguages] = useState([]);
+
+    const Option = Select.Option;
 
     const showModal = () => {
         setVisible(true);
@@ -31,6 +33,10 @@ function EditClassModal(props) {
         },
     };
 
+    function handleChange(ids) {
+        setLanguages(ids);
+    }
+
     return (
         <span>
             <Modal
@@ -46,12 +52,21 @@ function EditClassModal(props) {
                 ]}
             >
                 <Form {...formItemLayout}>
-
                     <Form.Item label="Title"><Input type='text' name='title' value={title} onChange={e => setTitle(e.target.value)}></Input></Form.Item>
                     <Form.Item label="Year of Class"><Input type='text' name='yearOfClass' value={yearOfClass} onChange={e => setYearOfClass(e.target.value)}></Input></Form.Item>
                     <Form.Item label="Module Number"><Input type='text' name='moduleNumber' value={moduleNumber} onChange={e => setModuleNumber(e.target.value)}></Input></Form.Item>
                     <Form.Item label="Difficulty"><Input type='text' name='difficulty' value={difficulty} onChange={e => setDifficuty(e.target.value)}></Input></Form.Item>
-                    <Form.Item label="Languages"><Input type='text' name='tags' value={tags} onChange={e => setTags(e.target.value)}></Input></Form.Item>
+                    <Form.Item label="Languages">
+                        <Select
+                            mode="multiple"
+                            style={{ width: '100%' }}
+                            placeholder="Please select"
+                            defaultValue={languages}
+                            onChange={handleChange}
+                        >
+                            {props.languages.map(l => <Option key={l._id} value={languages}>{l.language}</Option>)}
+                        </Select>
+                    </Form.Item>
                 </Form>
             </Modal>
             <a onClick={showModal}>Edit</a>
@@ -63,7 +78,7 @@ function EditClassModal(props) {
             _id: id,
             yearOfClass: yearOfClass,
             moduleNumber: moduleNumber,
-            tags: tags,
+            languages: languages,
             title: title,
             difficulty: difficulty
         }

@@ -82,7 +82,7 @@ function Class() {
           key="action"
           render={(text, record) => (
             <span>
-              {/* <EditClassModal record={record} onUpdate={loadData} onError={handleError} /> */}
+              <EditClassModal languages={allLanguages} record={record} onUpdate={loadData} onError={handleError} />
               <Divider type="vertical" />
               <a onClick={() => removeFromDb(record._id)}>Delete</a>
             </span>
