@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import {
-    Form, Input, Row, Col, Button, Layout, Menu, notification,
-Select} from 'antd';
-import Config from '../config/app.local.conf.js'
+    Form, Input, Row, Col, Button, Layout, Menu, notification, List,
+    Select } from 'antd';
+import Config from '../config/app.local.conf.js';
+import { isEmpty } from 'lodash';
 
 
 function AddAlumniForm(props) {
@@ -15,13 +16,21 @@ function AddAlumniForm(props) {
     const [gitHub, setGitHub] = useState('');
     const [linkedIn, setLinkedIn] = useState('');
     const [bio, setBio] = useState('');
+    const [allClasses, setAllClass] = useState([]);
+    const [classes, setClass] = useState([]);
 
     const { TextArea } = Input;
     const { Header, Content, Footer } = Layout;
-
     const Option = Select.Option;
-    const children = [];
 
+
+    useEffect(() => {
+        if (isEmpty(allClasses)) {
+            fetch(Config.websiteServiceUrl + "class")
+                .then(res => res.json())
+                .then(json => setAllClass(json))
+        }
+    }, [])
 
     function clearFields() {
         setFirstName('');
@@ -31,6 +40,7 @@ function AddAlumniForm(props) {
         setGitHub('');
         setLinkedIn('');
         setBio('');
+        setClass([]);
     }
     const formItemLayout = {
         labelCol: {
@@ -55,13 +65,12 @@ function AddAlumniForm(props) {
         },
     };
 
-    for (let i = 10; i < 36; i++) {
-        children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-      }
       
-      function handleChange(value) {
-        console.log(`selected ${value}`);
-      }
+    function handleChange(ids) {
+        const alumniClasses = allClasses.filter(l => ids.includes(l._id));
+        setClass(alumniClasses);
+    }
+    
 
     return (
 
@@ -142,18 +151,6 @@ function AddAlumniForm(props) {
                                 </Col>
                             </Row>
                         </Form.Item>
-                        <Select
-                            mode="multiple"
-                            style={{ width: '50%' }}
-                            placeholder="Please select"
-                            defaultValue={['a10', 'c12']}
-                            onChange={handleChange}
-                        >
-                            {children}
-                        </Select>
-                        <Form.Item>
-
-                        </Form.Item>
 
                         <Form.Item
                             label="Bio:" >
@@ -164,6 +161,21 @@ function AddAlumniForm(props) {
                             </Row>
                         </Form.Item>
 
+                        <Form.Item
+                            label="Class Select">
+                            <Row gutter={8}>
+                                <Col span={12}>
+                                    <Select
+                                        mode="multiple"
+                                        style={{ width: '100%' }}
+                                        placeholder="Please select"
+                                        value={classes.map(c => c._id)}
+                                        onChange={handleChange}
+                                    >
+                                        {allClasses.map(l => <Option key={l._id}>{l.title}</Option>)}
+                                    </Select>
+                                </Col></Row>
+                        </Form.Item>
 
                         <Form.Item {...tailFormItemLayout}>
                             <Row gutter={8}>
@@ -190,7 +202,8 @@ function AddAlumniForm(props) {
             github: gitHub,
             linkedin: linkedIn,
             bio: bio,
-            birthday: birthday
+            birthday: birthday,
+            classes: classes
         }
 
         Axios.post(Config.websiteServiceUrl + "alumni", { newAlumni })
@@ -198,12 +211,12 @@ function AddAlumniForm(props) {
                 console.log(res);
                 console.log(res.data);
                 clearFields();
-            }).catch(function(error) {
+            }).catch(function (error) {
                 console.log(JSON.stringify(error));
                 displayNotificationError(error.response.data);
             });
     }
-    
+
     function displayNotificationError(error) {
         notification["error"]({
             message: 'Please populate folloiwng fields:',
