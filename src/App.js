@@ -28,7 +28,7 @@ class App extends Component {
               <Route path="/addAlumni" exact component={AddAlumniForm} />
             </Content>
             <Footer style={{ textAlign: 'center' }}>
-              Ant Design ©2018 Created by Ant UED
+              OKCoders Organization ©2018, Oklahoma City, OK 
             </Footer>
           </Layout>
         </Router>
