@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Config from '../config/app.local.conf';
-import { Button, Modal, Col, Row } from 'antd';
+import { Button, Modal, Form, Input, Select } from 'antd';
 
 function EditClassModal(props) {
 
@@ -8,9 +8,11 @@ function EditClassModal(props) {
     const [id] = useState(props.record._id);
     const [yearOfClass, setYearOfClass] = useState(props.record.yearOfClass);
     const [moduleNumber, setModuleNumber] = useState(props.record.moduleNumber);
-    const [tags, setTags] = useState(props.record.languageTags.join(', '));
     const [title, setTitle] = useState(props.record.title);
     const [difficulty, setDifficuty] = useState(props.record.difficulty);
+    const [languages, setLanguages] = useState(props.record.languages);
+
+    const Option = Select.Option;
 
     const showModal = () => {
         setVisible(true);
@@ -18,6 +20,22 @@ function EditClassModal(props) {
 
     const handleCancel = () => {
         setVisible(false);
+    }
+
+    const formItemLayout = {
+        labelCol: {
+            xs: { span: 24 },
+            sm: { span: 8 },
+        },
+        wrapperCol: {
+            xs: { span: 24 },
+            sm: { span: 16 },
+        },
+    };
+
+    function handleChange(ids) {
+        const langs = props.languages.filter(l => ids.includes(l._id));
+        setLanguages(langs);
     }
 
     return (
@@ -34,47 +52,34 @@ function EditClassModal(props) {
                     </Button>,
                 ]}
             >
-                <Row>
-                    <Col span={6}>Title:</Col>
-                    <Col span={12}><input type='text' placeholder='Title' name='title' value={title} onChange={e => setTitle(e.target.value)}></input></Col>
-                </Row>
-                <Row>
-                    <Col span={6}>Year of Class:</Col>
-                    <Col span={16}><input type='text' placeholder='Year of Class' name='yearOfClass' value={yearOfClass} onChange={e => setYearOfClass(e.target.value)}></input></Col>
-                </Row>
-                <Row>
-                    <Col span={6}>Module Number:</Col>
-                    <Col span={12}><input type='text' placeholder='Module Number' name='moduleNumber' value={moduleNumber} onChange={e => setModuleNumber(e.target.value)}></input></Col>
-                </Row>
-                <Row>
-                    <Col span={6}>Difficulty:</Col>
-                    <Col span={12}><input type='text' placeholder='Difficulty' name='difficulty' value={difficulty} onChange={e => setDifficuty(e.target.value)}></input></Col >
-                </Row>
-                <Row>
-                    <Col span={6}>Language:</Col>
-                    <Col span={12}><input type='text' placeholder='Languages' name='tags' value={tags} onChange={e => setTags(e.target.value)}></input></Col>
-                </Row>
+                <Form {...formItemLayout}>
+                    <Form.Item label="Title"><Input type='text' name='title' value={title} onChange={e => setTitle(e.target.value)}></Input></Form.Item>
+                    <Form.Item label="Year of Class"><Input type='text' name='yearOfClass' value={yearOfClass} onChange={e => setYearOfClass(e.target.value)}></Input></Form.Item>
+                    <Form.Item label="Module Number"><Input type='text' name='moduleNumber' value={moduleNumber} onChange={e => setModuleNumber(e.target.value)}></Input></Form.Item>
+                    <Form.Item label="Difficulty"><Input type='text' name='difficulty' value={difficulty} onChange={e => setDifficuty(e.target.value)}></Input></Form.Item>
+                    <Form.Item label="Languages">
+                        <Select
+                            mode="multiple"
+                            style={{ width: '100%' }}
+                            placeholder="Please select"
+                            value={languages.map(l => l._id)}
+                            onChange={handleChange}
+                        >
+                            {props.languages.map(l => <Option key={l._id}>{l.language}</Option>)}
+                        </Select>
+                    </Form.Item>
+                </Form>
             </Modal>
             <a onClick={showModal}>Edit</a>
         </span>
     );
-
-    function clearFields() {
-        setYearOfClass('');
-        setDifficuty('');
-        setModuleNumber('');
-        setTags('');
-        setTitle('');
-    }
-
-
 
     function UpdateClass() {
         const record = {
             _id: id,
             yearOfClass: yearOfClass,
             moduleNumber: moduleNumber,
-            tags: tags,
+            languages: languages,
             title: title,
             difficulty: difficulty
         }
@@ -90,7 +95,6 @@ function EditClassModal(props) {
                 }
                 setVisible(false);
                 props.onUpdate();
-                clearFields();
             })
             .catch(err => {
                 props.onError(err)

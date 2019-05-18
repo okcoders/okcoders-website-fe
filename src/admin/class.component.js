@@ -7,38 +7,40 @@ import EditClassModal from './editModal.component';
 
 function Class() {
   const [classes, setClasses] = useState([]);
+  const [allLanguages, setAllLanguages] = useState([]);
   const { Column } = Table;
 
   useEffect(() => {
     if (isEmpty(classes)) {
       loadData();
     }
-  })
+  }, [])
 
   const loadData = () => {
-    fetch(`${Config.websiteServiceUrl}class`)
-      .then(res => {
-        if (!res.ok) {
-          throw Error(res.statusText);
-        }
-        return res.json()
+    Promise.all([fetch(`${Config.websiteServiceUrl}language`), fetch(`${Config.websiteServiceUrl}class`)])
+      .then(values => {
+        const [languages, newClasses] = values;
+        return Promise.all([languages.json(), newClasses.json()])
       })
-      .then(json => {
-        if (isEmpty(json) && isEmpty(classes)) {
+      .then(values => {
+        const [languages, newClasses] = values;
+        if (isEmpty(newClasses) && isEmpty(classes)) {
           return;
         }
-        setClasses(json);
+
+        setClasses(newClasses);
+        setAllLanguages(languages);
       })
       .catch(err => {
         notification['error']({
           message: 'Oh No! Something went wrong!',
-          description: `Sorry about that! The list of classes was not found.`
+          description: `Sorry about that! The list of classes or languages was not found.`
         });
       })
   }
 
   return (
-    <div>
+    < div >
       <h3>Previous Classes</h3>
       <Table dataSource={classes}>
         <Column
@@ -63,28 +65,32 @@ function Class() {
         />
         <Column
           title="Languages"
-          dataIndex="languageTags"
-          key="languageTags"
-          render={tags => (
-            <span>
-              {tags.map(tag => <Tag color="blue" key={tag}>{tag}</Tag>)}
-            </span>
-          )}
+          dataIndex="languages"
+          key="languages"
+          render={languages => {
+            return (
+              < span >
+                {languages.map(language => {
+                  return <Tag color="blue" key={language.language}>{language.language}</Tag>
+                })}
+              </span>
+            )
+          }}
         />
         <Column
           title="Action"
           key="action"
           render={(text, record) => (
             <span>
-              <EditClassModal record={record} onUpdate={loadData} onError={handleError} />
+              <EditClassModal languages={allLanguages} record={record} onUpdate={loadData} onError={handleError} />
               <Divider type="vertical" />
               <a onClick={() => removeFromDb(record._id)}>Delete</a>
             </span>
           )}
         />
       </Table>
-      <AddClassModal onUpdate={loadData} onError={handleError} />
-    </div>
+      <AddClassModal languages={allLanguages} onUpdate={loadData} onError={handleError} />
+    </div >
   );
 
   function handleError(err) {
@@ -92,10 +98,6 @@ function Class() {
       message: 'Oh No! Something went wrong!',
       description: `Sorry about that! It will be back up and running in a jiffy! We were unable to add your class to the list.`
     });
-  }
-
-  function editRecord(record) {
-
   }
 
   function removeFromDb(id) {
@@ -116,6 +118,4 @@ function Class() {
       });
   }
 }
-
-
 export { Class };
