@@ -19,7 +19,7 @@ function Class() {
     if (isEmpty(classes)) {
       loadData();
     }
-  }, [])
+  })
 
   const loadData = () => {
     Promise.all([fetch(`${Config.websiteServiceUrl}language`), fetch(`${Config.websiteServiceUrl}class`), fetch(`${Config.websiteServiceUrl}alumni?verified=false`)])
