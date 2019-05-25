@@ -9,7 +9,7 @@
 }
 
 .backgroundImage {
-    background: linear-gradient(rgba(168, 168, 168, 0.993), rgba(0, 0, 0, 0.5));
+    background: linear-gradient(rgba(168, 168, 168, 0.993));
     /* background-image: url(../images/skybackground.jpg); */
     /* background-size: cover;
     background-repeat: no-repeat;
@@ -46,4 +46,8 @@
 
 .logo {
     text-align: right;
+}
+
+.content {
+    background: linear-gradient( rgba(255, 255, 255, 0.39));
 }

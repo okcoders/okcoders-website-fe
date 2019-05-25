@@ -8,7 +8,7 @@ export function AlumniCard(props) {
 
     return (
         <Card
-            style={{ width: 300 }}
+            style={{ width: 270 }}
             cover={<img alt="example" src={props.alumni.avatar} />}
             actions={[
                 <Icon type="linkedin" onClick={()=> window.open(props.alumni.linkedin)} />, 

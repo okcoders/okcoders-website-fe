@@ -19,13 +19,12 @@ class App extends Component {
     return (
       <>
          <Router>
-          <Layout className="backgroundImage">
-          
+          <Layout>
             <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
               <Nav/>
             </Header>
             <JumboTron/>
-            <Content style={{ padding: '0 75px', marginTop: 24 }}>
+            <Content style={{ padding: '0 75px', marginTop: 24 }} className="content">
               <Route path="/alumni" exact component={Alumni} />
               <Route path="/admin" exact component={Class} />
               <Route path="/alumni/:id" exact component={AlumniDetail} />
