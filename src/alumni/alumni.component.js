@@ -30,7 +30,6 @@ export function Alumni(props) {
 
   return (
       <>
-            <Logo/>
               <div>
               <Select
                 mode="tags"
