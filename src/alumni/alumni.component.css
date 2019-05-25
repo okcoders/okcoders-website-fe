@@ -8,3 +8,46 @@
     margin: 24;
 }
 
+.backgroundImage {
+    background: linear-gradient(rgba(168, 168, 168, 0.993));
+    /* background-image: url(../images/skybackground.jpg); */
+    /* background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center bottom; */
+}
+
+/* Another photo option */
+/* https://cdn.dribbble.com/users/1199246/screenshots/3364565/okc.png */
+
+.jumbotron {
+    background-image: url('http://okcoders.com/wp-content/uploads/2015/01/okc-skyline.jpg');
+    background-size: 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat; 
+    color: white;
+    padding: 48px;
+}
+
+
+.jumbotron p {
+    background-color: rgba(34, 82, 145, 0.5);
+    width: 500px;
+    font-weight: bolder;
+    border-radius: 1em;
+    padding: 1em;
+}
+
+.jumbotron h1 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+    font-weight: bold;
+}
+
+.logo {
+    text-align: right;
+}
+
+.content {
+    background: linear-gradient( rgba(255, 255, 255, 0.39));
+}
