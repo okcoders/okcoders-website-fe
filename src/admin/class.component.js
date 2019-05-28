@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf';
-import { Table, Divider, Tag, notification, Input, List, Button } from 'antd';
+import { Table, Divider, Tag, notification, Input, List, Button, Icon } from 'antd';
 import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
 import EditClassModal from './editModal.component';
@@ -69,40 +69,6 @@ function Class() {
 
   return (
     <>
-      {/* <div>
-        {allLanguages.map((language, index) => {
-          const isLongTag = language.language.length > 20;
-          const tagElem = (
-            <Tag key={language._id} closable={true} onClose={() => removeLanguage(language)}>
-              {isLongTag ? `${language.language.slice(0, 20)}...` : language.language}
-            </Tag>
-          );
-          return isLongTag ? (
-            <Tooltip title={language.language} key={language._id}>
-              {tagElem}
-            </Tooltip>
-          ) : (
-              tagElem
-            );
-        })}
-        {
-          (
-            <Input
-              type="text"
-              size="small"
-              style={{ width: 78 }}
-              onChange={handleInputChange}
-              onBlur={handleInputConfirm}
-              onPressEnter={handleInputConfirm}
-            />
-          )}
-        {
-          (
-            <Tag onClick={showInput} style={{ background: '#fff', borderStyle: 'dashed' }}>
-              <Icon type="plus" /> New Tag
-          </Tag>
-          )}
-      </div> */}
       <div>
         <h3 style={{ margin: '16px 0' }}>Languages</h3>
         <List
@@ -111,9 +77,7 @@ function Class() {
           renderItem={l => (
             <List.Item>
               {l.language}
-              <Button onClick={() => removeLanguage(l._id)}>
-                X
-              </Button>
+              <Icon type="close-circle" onClick={() => removeLanguage(l._id)} />
             </List.Item>
           )}
         />
@@ -172,6 +136,8 @@ function Class() {
         <AddClassModal languages={allLanguages} onUpdate={loadData} onError={handleError} />
       </div >
       <div>
+        {/* MAKE THIS INTO A TABLE */}
+        {/* CREATE BUTTONS TO ACCEPT OR DENY */}
         <h3 style={{ margin: '16px 0' }}>Confirm New Alumni</h3>
         <List
           bordered
@@ -188,6 +154,9 @@ function Class() {
       </div>
     </>
   );
+
+  // WRITE FUNCTION TO HANDLE ACCEPTED ALUMNI
+  // WRITE FUNCTION TO HANDLE DENIED ALUMNI
 
   function handleError(err) {
     notification['error']({
