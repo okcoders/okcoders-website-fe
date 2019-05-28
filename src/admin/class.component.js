@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf';
-import { Table, Divider, Tag, notification, Input, List, Button, Icon } from 'antd';
+import { Table, Divider, Tag, notification, Input, List, Button, Icon, Modal } from 'antd';
 import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
 import EditClassModal from './editModal.component';
@@ -14,6 +14,10 @@ function Class() {
   const [newLanguage, setNewLanguage] = useState('');
   const { Column } = Table;
   const [languageProcessing, setLanguageProcessing] = useState(false);
+
+  const handleCancel = () => {
+    setVisible(false);
+  }
 
   useEffect(() => {
     if (isEmpty(classes)) {
@@ -44,13 +48,7 @@ function Class() {
       })
   }
 
-  function handleInputChange(e) {
-    setLanguage(e.target.value);
-  }
 
-  function showInput() {
-    setVisible(true);
-  }
 
   function saveNewLanguage(e) {
     if (!newLanguage) {
@@ -145,6 +143,19 @@ function Class() {
           renderItem={a => (
             <List.Item>
               {`${a.firstName} ${a.lastName}`}
+              <Button type="primary" onClick={showModal()}>
+                Open Modal
+               </Button>
+              <Modal
+                title="Basic Modal"
+                visible={visible}
+                onCancel={handleCancel}
+                onOk={handleCancel}
+              >
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+              </Modal>
               {/* <Button onClick={() => removeAlumni(l._id)}>
               X
               </Button> */}
@@ -184,6 +195,12 @@ function Class() {
         handleError()
       });
   }
+
+  function showModal() {
+    setVisible(true);
+    console.log('here');
+  };
+
 
   function removeLanguage(id) {
     fetch(`${Config.websiteServiceUrl}language/${id}`, {
