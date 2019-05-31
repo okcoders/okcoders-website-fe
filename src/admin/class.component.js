@@ -16,6 +16,7 @@ function Class() {
   const [languageProcessing, setLanguageProcessing] = useState(false);
 
   const handleCancel = () => {
+    console.log('here')
     setVisible(false);
   }
 
@@ -36,9 +37,9 @@ function Class() {
         if (isEmpty(newClasses) && isEmpty(classes)) {
           return;
         }
-        setAlumni(alumni);
         setClasses(newClasses);
         setAllLanguages(languages);
+        setAlumni(alumni);
       })
       .catch(err => {
         notification['error']({
@@ -133,7 +134,17 @@ function Class() {
         </Table>
         <AddClassModal languages={allLanguages} onUpdate={loadData} onError={handleError} />
       </div >
-      <div>
+      <span>
+        <Modal
+          title="Basic Modal"
+          visible={visible}
+          onCancel={handleCancel}
+          onOk={handleCancel}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
         {/* MAKE THIS INTO A TABLE */}
         {/* CREATE BUTTONS TO ACCEPT OR DENY */}
         <h3 style={{ margin: '16px 0' }}>Confirm New Alumni</h3>
@@ -144,30 +155,43 @@ function Class() {
             <List.Item>
               {`${a.firstName} ${a.lastName}`}
               <Button type="primary" onClick={showModal()}>
-                Open Modal
+                More Info
                </Button>
-              <Modal
-                title="Basic Modal"
-                visible={visible}
-                onCancel={handleCancel}
-                onOk={handleCancel}
-              >
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-              </Modal>
-              {/* <Button onClick={() => removeAlumni(l._id)}>
+
+              <Button onClick={acceptAlumni()}>Accept</Button>
+              {/* <Button onClick={declineAlumni()}> Deny</Button> */}
+              {/* <Button onClick={()}=> removeAlumni(l._id)}>
               X
               </Button> */}
             </List.Item>
           )}
         />
-      </div>
+      </span>
     </>
   );
 
   // WRITE FUNCTION TO HANDLE ACCEPTED ALUMNI
+  function acceptAlumni() {
+
+  }
   // WRITE FUNCTION TO HANDLE DENIED ALUMNI
+  // function declineAlumni(id) {
+  //   fetch(`${Config.websiteServiceUrl}alumni/${id}`, {
+  //     method: `DELETE`
+  //   })
+  //     .then(res => {
+  //       if (!res.ok) {
+  //         throw Error(res.statusText);
+  //       }
+  //       loadData();
+  //     })
+  //     .catch(err => {
+  //       notification['error']({
+  //         message: 'Oh No! Something went wrong!',
+  //         description: `Sorry about that! This alumni could not be removed from the list`
+  //       });
+  //     });
+  // }
 
   function handleError(err) {
     notification['error']({
@@ -197,8 +221,12 @@ function Class() {
   }
 
   function showModal() {
-    setVisible(true);
-    console.log('here');
+    if (setVisible) {
+      handleCancel()
+      return
+    } else {
+      setVisible(true);
+    }
   };
 
 
