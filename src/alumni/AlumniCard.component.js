@@ -1,11 +1,13 @@
 import React from 'react';
 import { Card, Icon, Avatar } from 'antd'
 import './alumni.component.css';
+import { GetAge } from './alumni.component.js';
 const { Meta } = Card;
 
 
-export function AlumniCard(props) {
 
+export function AlumniCard(props) {
+console.log(props.alumni)
     return (
         <Card
             style={{ width: 270 }}
@@ -18,7 +20,7 @@ export function AlumniCard(props) {
         <Meta
             avatar={<Avatar src={props.alumni.avatar} />}
             title={props.alumni.firstName + " " + props.alumni.lastName}
-            description={props.alumni.age}
+            description={GetAge(props.alumni.age) + ' ' + props.alumni.languages}
             />
         </Card>
     )

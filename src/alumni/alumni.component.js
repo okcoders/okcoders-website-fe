@@ -3,8 +3,9 @@ import Config from '../config/app.local.conf.js'
 import { List, Pagination, Menu, Select } from 'antd'
 import { isEmpty } from 'lodash'
 import './alumni.component.css';
-import { Logo } from './OKCoderLogo.component'
-import { AlumniCard } from './AlumniCard.component'
+import { Logo } from './OKCoderLogo.component';
+import { AlumniCard } from './AlumniCard.component';
+import { JumboTron } from './JumboTron.component';
 const Option = Select.Option;
 
 // in case we need to loop through classes later
@@ -12,6 +13,17 @@ const Option = Select.Option;
 // for (let i = 10; i < 36; i++) {
 //   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 // }
+
+export function GetAge(birthday) {
+  var today = new Date();
+  var birthDate = new Date(birthday);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+  }
+  return age;
+}
 
 export function Alumni(props) {
   const [alumni, setAlumni] = useState([]);
@@ -30,6 +42,7 @@ export function Alumni(props) {
 
   return (
       <>
+      <JumboTron />
               <div>
               <Select
                 mode="tags"

@@ -6,6 +6,7 @@ import './alumni.component.css';
 import { Logo } from './OKCoderLogo.component';
 import { AlumniCard } from './AlumniCard.component'
 
+
 export function AlumniDetail(props) {
     console.log(props)
     const [alumni, setAlumni] = useState({});
