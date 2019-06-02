@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf.js'
-import { List, Pagination, Menu, Select } from 'antd'
+import { List, Pagination, Menu, Select, notification } from 'antd'
 import { isEmpty } from 'lodash'
 import './alumni.component.css';
-import { Logo } from './OKCoderLogo.component';
 import { AlumniCard } from './AlumniCard.component';
 import { JumboTron } from './JumboTron.component';
 const Option = Select.Option;
-
-// in case we need to loop through classes later
-// const children = [];
-// for (let i = 10; i < 36; i++) {
-//   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-// }
 
 export function GetAge(birthday) {
   var today = new Date();
@@ -27,6 +20,7 @@ export function GetAge(birthday) {
 
 export function Alumni(props) {
   const [alumni, setAlumni] = useState([]);
+  const [allLanguages, setAllLanguages] = useState([]);
   
   function handleChange(value) {
     console.log(`selected ${value}`);
@@ -40,6 +34,22 @@ export function Alumni(props) {
     }
   })
 
+  useEffect(() => {
+    if (isEmpty(allLanguages)) {
+      fetch(Config.websiteServiceUrl + "language")
+        .then(res => res.json())
+        .then(json => setAllLanguages(json))
+    }
+  })
+
+  function makeOption() {
+    const children = [];
+    for (let i = 0; i < allLanguages.length; i++) {
+      children.push(<Option key={allLanguages[i].language}>{allLanguages[i].language}</Option>);
+    }
+    return children
+    }
+  
   return (
       <>
       <JumboTron />
@@ -50,13 +60,10 @@ export function Alumni(props) {
                 style={{ width: '25%' }}
                 placeholder="Tags Mode"
                 onChange={handleChange}
+                dataSource={alumni.languages}
+                renderItem={makeOption}
                 >
-                <Option key="HTML">HTML</Option>
-                <Option key="CSS">CSS</Option>
-                <Option key="JavaScript">JavaScript</Option>
-                <Option key="Backend">Backend</Option>
-                <Option key="React">React</Option>
-                <Option key="Analytics">Analytics</Option>
+                {makeOption()}
               </Select>
               </div>
               <div style={{ background: '#fff', padding: 60, minHeight: 380 }}>

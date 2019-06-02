@@ -7,7 +7,7 @@ const { Meta } = Card;
 
 
 export function AlumniCard(props) {
-console.log(props.alumni)
+
     return (
         <Card
             style={{ width: 270 }}
