@@ -21,17 +21,13 @@ export function GetAge(birthday) {
 export function Alumni(props) {
   const [alumni, setAlumni] = useState([]);
   const [allLanguages, setAllLanguages] = useState([]);
-  
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
 
   useEffect(() => {
     if (isEmpty(alumni)) {
       fetch(Config.websiteServiceUrl + "alumni")
         .then(res => res.json())
         .then(json => setAlumni(json))
-    }
+    } 
   })
 
   useEffect(() => {
@@ -41,6 +37,42 @@ export function Alumni(props) {
         .then(json => setAllLanguages(json))
     }
   })
+
+//   function destroyer(arr) {
+//     const output = [];
+//     for (var y = 0; y < arr.length; y++) {
+//         output.push(arr[y]);
+//     }
+
+//     function destroy(value) {
+//         for (var x = 0; x < output.length; x++) {
+//             if (value === output[x]) {
+//                 return false;
+//             }
+//         }
+//         return true;
+//     }
+//     return arr.filter(destroy);
+// }
+// console.log(destroyer())
+
+  function handleChange(value){
+    console.log(`selected ${value}`);
+    for (let i = 0; i < alumni.length; i++) {
+      for (let j = 0; j < alumni[i].languages.length; j++) {
+        if (value == "") {
+          fetch(Config.websiteServiceUrl + "alumni")
+            .then(res => res.json())
+            .then(json => setAlumni(json))
+        } else if (value == alumni[i].languages[j]) {
+          const filteredAlumni = []
+          filteredAlumni.push(alumni[i]);
+            console.log(filteredAlumni)
+            return setAlumni(filteredAlumni)
+          } else {
+      return console.log("it didnt work")
+    }
+  }}}
 
   function makeOption() {
     const children = [];
@@ -60,8 +92,6 @@ export function Alumni(props) {
                 style={{ width: '25%' }}
                 placeholder="Tags Mode"
                 onChange={handleChange}
-                dataSource={alumni.languages}
-                renderItem={makeOption}
                 >
                 {makeOption()}
               </Select>
@@ -86,6 +116,8 @@ export function Alumni(props) {
     </>
   );
 }
+
+
 
 function onShowSizeChange(current, pageSize) {
   console.log(current, pageSize);
