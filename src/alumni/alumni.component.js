@@ -58,21 +58,23 @@ export function Alumni(props) {
 
   function handleChange(value){
     console.log(`selected ${value}`);
+    console.log(alumni);
     for (let i = 0; i < alumni.length; i++) {
       for (let j = 0; j < alumni[i].languages.length; j++) {
         if (value == "") {
           fetch(Config.websiteServiceUrl + "alumni")
             .then(res => res.json())
             .then(json => setAlumni(json))
-        } else if (value == alumni[i].languages[j]) {
-          const filteredAlumni = []
-          filteredAlumni.push(alumni[i]);
+        } else {
+          function languageFilter(x) {
+              return x.languages[j] == value
+              }
+          
+          const filteredAlumni = alumni.filter(languageFilter);
             console.log(filteredAlumni)
             return setAlumni(filteredAlumni)
-          } else {
-      return console.log("it didnt work")
-    }
-  }}}
+          }
+    }}}
 
   function makeOption() {
     const children = [];
