@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf.js'
 import { List, Pagination, Menu, Select, notification } from 'antd'
-import { isEmpty, isArray } from 'lodash'
+import { isEmpty } from 'lodash'
 import './alumni.component.css';
 import { AlumniCard } from './AlumniCard.component';
 import { JumboTron } from './JumboTron.component';
@@ -27,9 +27,6 @@ export function Alumni(props) {
       fetch(Config.websiteServiceUrl + "alumni")
         .then(res => res.json())
         .then(json => setAlumni(json))
-    // } else if (isArray(alumni) && handleChange()) {
-    //   setAlumni(handleChange)
-    // } 
   }})
 
   useEffect(() => {
@@ -40,38 +37,25 @@ export function Alumni(props) {
     }
   })
 
-//   function destroyer(arr) {
-//     const output = [];
-//     for (var y = 0; y < arr.length; y++) {
-//         output.push(arr[y]);
-//     }
-
-//     function destroy(value) {
-//         for (var x = 0; x < output.length; x++) {
-//             if (value === output[x]) {
-//                 return false;
-//             }
-//         }
-//         return true;
-//     }
-//     return arr.filter(destroy);
-// }
-// console.log(destroyer())
-
   function handleChange(value){
     const filters = [];
     if (value !== '') {
       filters.push(value);
     }
-    if (filters === []) {
+    
+    if (filters[0].length == 0){
       fetch(Config.websiteServiceUrl + "alumni")
         .then(res => res.json())
         .then(json => setAlumni(json))
-    } else if (filters !== []){
-      const filteredAlumni = alumni.filter(x => x.languages[0] == filters[0]);
-        console.log(filteredAlumni)
-        return filteredAlumni;
-      }
+    } else if (filters[0] != 0){
+        for (let i = 0; i < alumni.length; i++) {
+          for (let j = 0; j < alumni[i].languages.length; j++) {
+            for (let k = filters.length; k >= 0; k--) {
+              if (alumni[i].languages[j] == filters[k]) {
+                const filteredAlumni = alumni.filter(x => x.languages[j] == filters[k]);
+                console.log(filteredAlumni)
+                return setAlumni(filteredAlumni);
+      }}}}}
     }
 
   function makeOption() {
@@ -116,8 +100,6 @@ export function Alumni(props) {
     </>
   );
 }
-
-
 
 function onShowSizeChange(current, pageSize) {
   console.log(current, pageSize);
