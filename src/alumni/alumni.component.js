@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf.js'
 import { List, Pagination, Menu, Select, notification } from 'antd'
-import { isEmpty } from 'lodash'
+import { isEmpty, isArray } from 'lodash'
 import './alumni.component.css';
 import { AlumniCard } from './AlumniCard.component';
 import { JumboTron } from './JumboTron.component';
@@ -27,8 +27,10 @@ export function Alumni(props) {
       fetch(Config.websiteServiceUrl + "alumni")
         .then(res => res.json())
         .then(json => setAlumni(json))
-    } 
-  })
+    // } else if (isArray(alumni) && handleChange()) {
+    //   setAlumni(handleChange)
+    // } 
+  }})
 
   useEffect(() => {
     if (isEmpty(allLanguages)) {
@@ -57,24 +59,20 @@ export function Alumni(props) {
 // console.log(destroyer())
 
   function handleChange(value){
-    console.log(`selected ${value}`);
-    console.log(alumni);
-    for (let i = 0; i < alumni.length; i++) {
-      for (let j = 0; j < alumni[i].languages.length; j++) {
-        if (value == "") {
-          fetch(Config.websiteServiceUrl + "alumni")
-            .then(res => res.json())
-            .then(json => setAlumni(json))
-        } else {
-          function languageFilter(x) {
-              return x.languages[j] == value
-              }
-          
-          const filteredAlumni = alumni.filter(languageFilter);
-            console.log(filteredAlumni)
-            return setAlumni(filteredAlumni)
-          }
-    }}}
+    const filters = [];
+    if (value !== '') {
+      filters.push(value);
+    }
+    if (filters === []) {
+      fetch(Config.websiteServiceUrl + "alumni")
+        .then(res => res.json())
+        .then(json => setAlumni(json))
+    } else if (filters !== []){
+      const filteredAlumni = alumni.filter(x => x.languages[0] == filters[0]);
+        console.log(filteredAlumni)
+        return filteredAlumni;
+      }
+    }
 
   function makeOption() {
     const children = [];
