@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf.js'
 import { List, Pagination, Menu, Select, notification } from 'antd'
-import { isEmpty } from 'lodash'
+import { isEmpty, filter, matches, indexOf } from 'lodash';
 import './alumni.component.css';
 import { AlumniCard } from './AlumniCard.component';
 import { JumboTron } from './JumboTron.component';
 const Option = Select.Option;
+const _ = require('lodash');
 
 export function GetAge(birthday) {
   var today = new Date();
@@ -21,6 +22,13 @@ export function GetAge(birthday) {
 export function Alumni(props) {
   const [alumni, setAlumni] = useState([]);
   const [allLanguages, setAllLanguages] = useState([]);
+
+  
+  function resetAlumni() {
+    fetch(Config.websiteServiceUrl + "alumni")
+        .then(res => res.json())
+        .then(json => setAlumni(json))
+  }
 
   useEffect(() => {
     if (isEmpty(alumni)) {
@@ -38,25 +46,19 @@ export function Alumni(props) {
   })
 
   function handleChange(value){
-    const filters = [];
-    if (value !== '') {
-      filters.push(value);
-    }
-    
-    if (filters[0].length == 0){
-      fetch(Config.websiteServiceUrl + "alumni")
-        .then(res => res.json())
-        .then(json => setAlumni(json))
-    } else if (filters[0] != 0){
-        for (let i = 0; i < alumni.length; i++) {
-          for (let j = 0; j < alumni[i].languages.length; j++) {
-            for (let k = filters.length; k >= 0; k--) {
-              if (alumni[i].languages[j] == filters[k]) {
-                const filteredAlumni = alumni.filter(x => x.languages[j] == filters[k]);
-                console.log(filteredAlumni)
-                return setAlumni(filteredAlumni);
-      }}}}}
-    }
+    if (value.length == 0){
+      resetAlumni();
+      console.log(alumni)
+      console.log('reset')
+    } else if (value.length != 0){
+          for (let i = 0; i < alumni.length; i++){
+              alumni[i].languages.sort()
+              value.sort()}
+            const visibleAlumni = _.filter(alumni, { 'languages': value });
+            console.log(visibleAlumni)
+            setAlumni(visibleAlumni);
+          }
+        } 
 
   function makeOption() {
     const children = [];
