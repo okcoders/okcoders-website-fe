@@ -221,12 +221,7 @@ function Class() {
   }
 
   function showModal() {
-    if (setVisible) {
-      handleCancel()
-      return
-    } else {
-      setVisible(true);
-    }
+    setVisible(true);
   };
 
 
