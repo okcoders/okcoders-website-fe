@@ -154,15 +154,11 @@ function Class() {
           renderItem={a => (
             <List.Item>
               {`${a.firstName} ${a.lastName}`}
-              <Button type="primary" onClick={showModal()}>
+              <Button type="primary" onClick={showModal}>
                 More Info
                </Button>
-
-              <Button onClick={acceptAlumni()}>Accept</Button>
-              {/* <Button onClick={declineAlumni()}> Deny</Button> */}
-              {/* <Button onClick={()}=> removeAlumni(l._id)}>
-              X
-              </Button> */}
+              <Button onClick={() => acceptAlumni(a)}>Accept</Button>
+              <Button onClick={() => declineAlumni(a._id)}>Decline</Button>
             </List.Item>
           )}
         />
@@ -171,27 +167,45 @@ function Class() {
   );
 
   // WRITE FUNCTION TO HANDLE ACCEPTED ALUMNI
-  function acceptAlumni() {
-
+  function acceptAlumni(alumni) {
+    alumni.verified = true;
+    console.log(alumni);
+    fetch(`${Config.websiteServiceUrl}alumni`, {
+      method: `PUT`,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(alumni)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        loadData();
+      })
+      .catch(err => {
+        notification['error']({
+          message: 'Oh No! Something went wrong!',
+          description: `Sorry about that! This alumni could not be removed from the list`
+        });
+      });
   }
   // WRITE FUNCTION TO HANDLE DENIED ALUMNI
-  // function declineAlumni(id) {
-  //   fetch(`${Config.websiteServiceUrl}alumni/${id}`, {
-  //     method: `DELETE`
-  //   })
-  //     .then(res => {
-  //       if (!res.ok) {
-  //         throw Error(res.statusText);
-  //       }
-  //       loadData();
-  //     })
-  //     .catch(err => {
-  //       notification['error']({
-  //         message: 'Oh No! Something went wrong!',
-  //         description: `Sorry about that! This alumni could not be removed from the list`
-  //       });
-  //     });
-  // }
+  function declineAlumni(id) {
+    fetch(`${Config.websiteServiceUrl}alumni/${id}`, {
+      method: `DELETE`
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        loadData();
+      })
+      .catch(err => {
+        notification['error']({
+          message: 'Oh No! Something went wrong!',
+          description: `Sorry about that! This alumni could not be removed from the list`
+        });
+      });
+  }
 
   function handleError(err) {
     notification['error']({
