@@ -3,6 +3,7 @@ import Axios from 'axios';
 import {
     Form, Input, Row, Col, Button, Layout, Menu, notification, List,
     Select } from 'antd';
+import { Redirect } from "react-router-dom";
 import Config from '../config/app.local.conf.js';
 import { isEmpty } from 'lodash';
 
@@ -11,6 +12,7 @@ function Login(props) {
 
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [token, setToken] = useState('');
 
     const { TextArea } = Input;
     const { Header, Content, Footer } = Layout;
@@ -45,6 +47,9 @@ function Login(props) {
         },
     };
     
+    if(token){
+        return <Redirect to = '/admin' />
+    }
 
     return (
 
@@ -117,11 +122,22 @@ function Login(props) {
                 console.log(res.data);
                 clearFields();
                 localStorage.setItem("token", res.data.token);
+                setToken(res.data.token);
             }).catch(function (error) {
                 console.log(JSON.stringify(error));
+                displayNotificationError(error.response.data);
+                clearFields();
             });
         
     }
+
+    function displayNotificationError(error) {
+        notification["error"]({
+            message: 'Unauthorized User',
+            description: error,
+        });
+        console.log(error);
+    };
 }
 
 export default Login;
