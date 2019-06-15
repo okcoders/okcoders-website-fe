@@ -10,13 +10,12 @@ function Class() {
   const [alumni, setAlumni] = useState([]);
   const [allLanguages, setAllLanguages] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [language, setLanguage] = useState();
   const [newLanguage, setNewLanguage] = useState('');
   const { Column } = Table;
   const [languageProcessing, setLanguageProcessing] = useState(false);
+  const [selectedAlumni, setSelectedAlumni] = useState({});
 
   const handleCancel = () => {
-    console.log('here')
     setVisible(false);
   }
 
@@ -62,8 +61,6 @@ function Class() {
         setLanguageProcessing('');
         loadData();
       })
-    //call server
-
   }
 
   return (
@@ -141,12 +138,20 @@ function Class() {
           onCancel={handleCancel}
           onOk={handleCancel}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <p>Age: {selectedAlumni.age}</p>
+          <p>Email: {selectedAlumni.email}</p>
+          <p>Github Profile: {selectedAlumni.github}</p>
+          <p>Linked In Profile: {selectedAlumni.linkedin}</p>
+          <p>Classes taken: {(selectedAlumni.languages || []).join(', ')}</p>
+          {/* 
+  email: String,
+  bio: String,
+  birthday: String,
+  linkedin: String,
+  github: String,
+  classes: [{type: Schema.Types.ObjectId, ref: 'Class' }], */}
         </Modal>
         {/* MAKE THIS INTO A TABLE */}
-        {/* CREATE BUTTONS TO ACCEPT OR DENY */}
         <h3 style={{ margin: '16px 0' }}>Confirm New Alumni</h3>
         <List
           bordered
@@ -154,7 +159,7 @@ function Class() {
           renderItem={a => (
             <List.Item>
               {`${a.firstName} ${a.lastName}`}
-              <Button type="primary" onClick={showModal}>
+              <Button type="primary" onClick={() => showModal(a)}>
                 More Info
                </Button>
               <Button onClick={() => acceptAlumni(a)}>Accept</Button>
@@ -166,7 +171,6 @@ function Class() {
     </>
   );
 
-  // WRITE FUNCTION TO HANDLE ACCEPTED ALUMNI
   function acceptAlumni(alumni) {
     alumni.verified = true;
     console.log(alumni);
@@ -188,7 +192,6 @@ function Class() {
         });
       });
   }
-  // WRITE FUNCTION TO HANDLE DENIED ALUMNI
   function declineAlumni(id) {
     fetch(`${Config.websiteServiceUrl}alumni/${id}`, {
       method: `DELETE`
@@ -234,7 +237,9 @@ function Class() {
       });
   }
 
-  function showModal() {
+  function showModal(alumni) {
+    console.log(alumni);
+    setSelectedAlumni(alumni);
     setVisible(true);
   };
 
