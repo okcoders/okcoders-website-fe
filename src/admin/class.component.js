@@ -48,8 +48,6 @@ function Class() {
       })
   }
 
-
-
   function saveNewLanguage(e) {
     if (!newLanguage) {
       return
@@ -143,15 +141,7 @@ function Class() {
           <p>Github Profile: {selectedAlumni.github}</p>
           <p>Linked In Profile: {selectedAlumni.linkedin}</p>
           <p>Classes taken: {(selectedAlumni.languages || []).join(', ')}</p>
-          {/* 
-  email: String,
-  bio: String,
-  birthday: String,
-  linkedin: String,
-  github: String,
-  classes: [{type: Schema.Types.ObjectId, ref: 'Class' }], */}
         </Modal>
-        {/* MAKE THIS INTO A TABLE */}
         <h3 style={{ margin: '16px 0' }}>Confirm New Alumni</h3>
         <List
           bordered
