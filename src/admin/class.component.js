@@ -4,6 +4,7 @@ import { Table, Divider, Tag, notification, Input, List, Button, Icon, Modal } f
 import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
 import EditClassModal from './editModal.component';
+import baseHeaders from '../utils/baseHeaders';
 
 function Class() {
   const [classes, setClasses] = useState([]);
@@ -14,6 +15,7 @@ function Class() {
   const { Column } = Table;
   const [languageProcessing, setLanguageProcessing] = useState(false);
   const [selectedAlumni, setSelectedAlumni] = useState({});
+  const buildConfig = baseHeaders(localStorage.token);
 
   const handleCancel = () => {
     setVisible(false);
@@ -26,7 +28,7 @@ function Class() {
   })
 
   const loadData = () => {
-    Promise.all([fetch(`${Config.websiteServiceUrl}language`), fetch(`${Config.websiteServiceUrl}class`), fetch(`${Config.websiteServiceUrl}alumni?verified=false`)])
+    Promise.all([fetch(`${Config.websiteServiceUrl}language`), fetch(`${Config.websiteServiceUrl}class`), fetch(`${Config.websiteServiceUrl}alumni?verified=false`, buildConfig({}))])
       .then(values => {
         const [languages, newClasses, alumni] = values;
         return Promise.all([languages.json(), newClasses.json(), alumni.json()])
@@ -163,12 +165,10 @@ function Class() {
 
   function acceptAlumni(alumni) {
     alumni.verified = true;
-    console.log(alumni);
-    fetch(`${Config.websiteServiceUrl}alumni`, {
+    fetch(`${Config.websiteServiceUrl}alumni`, buildConfig({
       method: `PUT`,
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(alumni)
-    })
+    }))
       .then(res => {
         if (!res.ok) {
           throw Error(res.statusText);
@@ -183,9 +183,9 @@ function Class() {
       });
   }
   function declineAlumni(id) {
-    fetch(`${Config.websiteServiceUrl}alumni/${id}`, {
+    fetch(`${Config.websiteServiceUrl}alumni/${id}`, buildConfig({
       method: `DELETE`
-    })
+    }))
       .then(res => {
         if (!res.ok) {
           throw Error(res.statusText);
@@ -212,11 +212,10 @@ function Class() {
       language: newLanguage
     }
 
-    return fetch(`${Config.websiteServiceUrl}language`, {
+    return fetch(`${Config.websiteServiceUrl}language`, buildConfig({
       method: `POST`,
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
-    })
+    }))
       .then(res => {
         if (!res.ok) {
           throw Error(res.statusText);
@@ -228,16 +227,15 @@ function Class() {
   }
 
   function showModal(alumni) {
-    console.log(alumni);
     setSelectedAlumni(alumni);
     setVisible(true);
   };
 
 
   function removeLanguage(id) {
-    fetch(`${Config.websiteServiceUrl}language/${id}`, {
+    fetch(`${Config.websiteServiceUrl}language/${id}`, buildConfig({
       method: `DELETE`
-    })
+    }))
       .then(res => {
         if (!res.ok) {
           throw Error(res.statusText);
@@ -253,9 +251,9 @@ function Class() {
   }
 
   function removeClass(id) {
-    fetch(`${Config.websiteServiceUrl}class/${id}`, {
+    fetch(`${Config.websiteServiceUrl}class/${id}`, buildConfig({
       method: `DELETE`
-    })
+    }))
       .then(res => {
         if (!res.ok) {
           throw Error(res.statusText);
