@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Config from '../config/app.local.conf';
 import { Button, Modal, Input, Form, Select } from 'antd';
+import baseHeaders from '../utils/baseHeaders';
 
 function AddClassModal(props) {
 
@@ -10,7 +11,7 @@ function AddClassModal(props) {
     const [title, setTitle] = useState();
     const [difficulty, setDifficuty] = useState();
     const [languages, setLanguages] = useState([]);
-
+    const buildConfig = baseHeaders(localStorage.token);
     const Option = Select.Option;
 
     const showModal = () => {
@@ -84,11 +85,11 @@ function AddClassModal(props) {
             difficulty: difficulty
         }
 
-        fetch(`${Config.websiteServiceUrl}class`, {
+        fetch(`${Config.websiteServiceUrl}class`, buildConfig({
             method: `POST`,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newClass)
-        })
+        }))
             .then(res => {
                 if (!res.ok) {
                     throw Error(res.statusText);
