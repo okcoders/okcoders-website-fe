@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf.js'
-import { List, Pagination, Menu, Select, notification } from 'antd'
-import { isEmpty, filter, matches, indexOf } from 'lodash';
+import { List, Pagination, Select } from 'antd'
+import { isEmpty } from 'lodash';
 import './alumni.component.css';
 import { AlumniCard } from './AlumniCard.component';
 import { JumboTron } from './JumboTron.component';
@@ -22,19 +22,23 @@ export function GetAge(birthday) {
 export function Alumni(props) {
   const [alumni, setAlumni] = useState([]);
   const [allLanguages, setAllLanguages] = useState([]);
+  const [visibleAlumni, setVisibleAlumni] = useState([]);
+  const [tags, setTags] = useState([]);
 
   
   function resetAlumni() {
-    fetch(Config.websiteServiceUrl + "alumni")
+    return fetch(Config.websiteServiceUrl + "alumni")
         .then(res => res.json())
         .then(json => setAlumni(json))
   }
 
   useEffect(() => {
-    if (isEmpty(alumni)) {
+    if (isEmpty(visibleAlumni)) {
       fetch(Config.websiteServiceUrl + "alumni")
         .then(res => res.json())
-        .then(json => setAlumni(json))
+        .then(json => {
+          setVisibleAlumni(json);
+          handleChange(tags)})
   }})
 
   useEffect(() => {
@@ -46,19 +50,16 @@ export function Alumni(props) {
   })
 
   function handleChange(value){
-    if (value.length == 0){
-      resetAlumni();
-      console.log(alumni)
-      console.log('reset')
-    } else if (value.length != 0){
-          for (let i = 0; i < alumni.length; i++){
-              alumni[i].languages.sort()
-              value.sort()}
-            const visibleAlumni = _.filter(alumni, { 'languages': value });
-            console.log(visibleAlumni)
-            setAlumni(visibleAlumni);
-          }
-        } 
+    setTags(value);
+    if (value.length === 0){
+      resetAlumni()
+        .then(function() {
+          setVisibleAlumni(alumni)
+        });
+    } else if (value.length !== 0){
+        const visAlumni = _.filter(alumni, function(alum) {return !_.isEmpty(_.intersectionWith(alum.languages, value, (a, b) => a === b))})
+        setVisibleAlumni(visAlumni);
+    }}
 
   function makeOption() {
     const children = [];
@@ -88,7 +89,7 @@ export function Alumni(props) {
                   gutter: 16, column: 3
                 }}
                 bordered
-                dataSource={alumni}
+                dataSource={visibleAlumni}
                 renderItem={renderAlum}
               />
               <div className="pagination">

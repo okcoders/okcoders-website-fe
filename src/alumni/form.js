@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Axios from 'axios';
 import {
-    Form, Input, Row, Col, Button, Menu, notification
+    Form, Input, Row, Col, Button, notification
 } from 'antd';
 import Config from '../config/app.local.conf.js'
 

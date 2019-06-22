@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf.js'
-import { Menu, notification } from 'antd'
+import { notification } from 'antd'
 import { isEmpty } from 'lodash'
 import './alumni.component.css';
 import { Logo } from './OKCoderLogo.component';
