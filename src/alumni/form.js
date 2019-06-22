@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import {
     Form, Input, Row, Col, Button, Layout, Menu, notification, List,
@@ -76,19 +76,6 @@ function AddAlumniForm(props) {
 
         <>
             <Layout>
-                <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-                    <div className="logo" />
-                    <Menu
-                        theme="dark"
-                        mode="horizontal"
-                        defaultSelectedKeys={['1']}
-                        style={{ lineHeight: '64px' }}
-                    >
-                        <Menu.Item key="1">Alumni</Menu.Item>
-                        <Menu.Item key="2">Submit</Menu.Item>
-                        <Menu.Item key="3">Verification</Menu.Item>
-                    </Menu>
-                </Header>
                 <Content style={{ padding: '0 50px', marginTop: 64 }}>
                     <br />
                     <br />
