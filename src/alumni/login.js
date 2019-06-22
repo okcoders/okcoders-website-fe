@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import {
     Form, Input, Row, Col, Button, Layout, Menu, notification, List,
-    Select } from 'antd';
+    Select
+} from 'antd';
 import { Redirect } from "react-router-dom";
 import Config from '../config/app.local.conf.js';
 import { isEmpty } from 'lodash';
@@ -46,9 +47,10 @@ function Login(props) {
             },
         },
     };
-    
-    if(token){
-        return <Redirect to = '/admin' />
+
+    if (token) {
+        console.log('here');
+        return <Redirect to='/admin' />
     }
 
     return (
@@ -109,7 +111,7 @@ function Login(props) {
                 displayNotificationError(error.response.data);
                 clearFields();
             });
-        
+
     }
 
     function displayNotificationError(error) {

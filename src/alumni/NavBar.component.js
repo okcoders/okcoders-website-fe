@@ -42,8 +42,8 @@ export function NavBar(props) {
         <Menu.Item key="/addAlumni">
           <Link to="/addAlumni">Submit</Link>
         </Menu.Item>
-        <Menu.Item key="/admin">
-          <Link to="/admin">Login</Link>
+        <Menu.Item key="/login">
+          <Link to="/login">Login</Link>
         </Menu.Item>
       </Menu>
     </>

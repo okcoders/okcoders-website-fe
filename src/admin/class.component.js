@@ -66,7 +66,7 @@ function Class() {
   return (
     <>
       <div>
-        <h3 style={{ margin: '16px 0' }}>Languages</h3>
+        <h3 style={{ margin: '16px 0', marginTop: '48px' }}>Languages</h3>
         <List
           bordered
           dataSource={allLanguages}
