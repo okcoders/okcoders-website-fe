@@ -104,9 +104,6 @@ function Login(props) {
                         </Form.Item>
                     </Form>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>
-                    Ant Design ©2018 Created by Ant UED
-          </Footer>
             </Layout>
         </>
     );
@@ -118,13 +115,10 @@ function Login(props) {
         }
         Axios.post(Config.websiteServiceUrl + "user/login", user)
             .then(res => {
-                console.log(res);
-                console.log(res.data);
                 clearFields();
                 localStorage.setItem("token", res.data.token);
                 setToken(res.data.token);
             }).catch(function (error) {
-                console.log(JSON.stringify(error));
                 displayNotificationError(error.response.data);
                 clearFields();
             });
