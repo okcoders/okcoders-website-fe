@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf';
-import { Table, Divider, Tag, notification, Input, List, Button } from 'antd';
+import { Table, Divider, Tag, notification, Input, List, Button, Icon, Modal } from 'antd';
 import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
 import EditClassModal from './editModal.component';
+import baseHeaders from '../utils/baseHeaders';
 
 function Class() {
   const [classes, setClasses] = useState([]);
   const [alumni, setAlumni] = useState([]);
   const [allLanguages, setAllLanguages] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [language, setLanguage] = useState();
   const [newLanguage, setNewLanguage] = useState('');
   const { Column } = Table;
   const [languageProcessing, setLanguageProcessing] = useState(false);
+  const [selectedAlumni, setSelectedAlumni] = useState({});
+  const buildConfig = baseHeaders(localStorage.token);
+
+  const handleCancel = () => {
+    setVisible(false);
+  }
 
   useEffect(() => {
     if (isEmpty(classes)) {
@@ -22,7 +28,7 @@ function Class() {
   })
 
   const loadData = () => {
-    Promise.all([fetch(`${Config.websiteServiceUrl}language`), fetch(`${Config.websiteServiceUrl}class`), fetch(`${Config.websiteServiceUrl}alumni?verified=false`)])
+    Promise.all([fetch(`${Config.websiteServiceUrl}language`), fetch(`${Config.websiteServiceUrl}class`), fetch(`${Config.websiteServiceUrl}alumni?verified=false`, buildConfig({}))])
       .then(values => {
         const [languages, newClasses, alumni] = values;
         return Promise.all([languages.json(), newClasses.json(), alumni.json()])
@@ -32,9 +38,9 @@ function Class() {
         if (isEmpty(newClasses) && isEmpty(classes)) {
           return;
         }
-        setAlumni(alumni);
         setClasses(newClasses);
         setAllLanguages(languages);
+        setAlumni(alumni);
       })
       .catch(err => {
         notification['error']({
@@ -42,14 +48,6 @@ function Class() {
           description: `Sorry about that! The data was not found.`
         });
       })
-  }
-
-  function handleInputChange(e) {
-    setLanguage(e.target.value);
-  }
-
-  function showInput() {
-    setVisible(true);
   }
 
   function saveNewLanguage(e) {
@@ -63,46 +61,10 @@ function Class() {
         setLanguageProcessing('');
         loadData();
       })
-    //call server
-
   }
 
   return (
     <>
-      {/* <div>
-        {allLanguages.map((language, index) => {
-          const isLongTag = language.language.length > 20;
-          const tagElem = (
-            <Tag key={language._id} closable={true} onClose={() => removeLanguage(language)}>
-              {isLongTag ? `${language.language.slice(0, 20)}...` : language.language}
-            </Tag>
-          );
-          return isLongTag ? (
-            <Tooltip title={language.language} key={language._id}>
-              {tagElem}
-            </Tooltip>
-          ) : (
-              tagElem
-            );
-        })}
-        {
-          (
-            <Input
-              type="text"
-              size="small"
-              style={{ width: 78 }}
-              onChange={handleInputChange}
-              onBlur={handleInputConfirm}
-              onPressEnter={handleInputConfirm}
-            />
-          )}
-        {
-          (
-            <Tag onClick={showInput} style={{ background: '#fff', borderStyle: 'dashed' }}>
-              <Icon type="plus" /> New Tag
-          </Tag>
-          )}
-      </div> */}
       <div>
         <h3 style={{ margin: '16px 0' }}>Languages</h3>
         <List
@@ -111,9 +73,7 @@ function Class() {
           renderItem={l => (
             <List.Item>
               {l.language}
-              <Button onClick={() => removeLanguage(l._id)}>
-                X
-              </Button>
+              <Icon type="close-circle" onClick={() => removeLanguage(l._id)} />
             </List.Item>
           )}
         />
@@ -171,7 +131,19 @@ function Class() {
         </Table>
         <AddClassModal languages={allLanguages} onUpdate={loadData} onError={handleError} />
       </div >
-      <div>
+      <span>
+        <Modal
+          title="Basic Modal"
+          visible={visible}
+          onCancel={handleCancel}
+          onOk={handleCancel}
+        >
+          <p>Age: {selectedAlumni.age}</p>
+          <p>Email: {selectedAlumni.email}</p>
+          <p>Github Profile: {selectedAlumni.github}</p>
+          <p>Linked In Profile: {selectedAlumni.linkedin}</p>
+          <p>Classes taken: {(selectedAlumni.languages || []).join(', ')}</p>
+        </Modal>
         <h3 style={{ margin: '16px 0' }}>Confirm New Alumni</h3>
         <List
           bordered
@@ -179,15 +151,54 @@ function Class() {
           renderItem={a => (
             <List.Item>
               {`${a.firstName} ${a.lastName}`}
-              {/* <Button onClick={() => removeAlumni(l._id)}>
-              X
-              </Button> */}
+              <Button type="primary" onClick={() => showModal(a)}>
+                More Info
+               </Button>
+              <Button onClick={() => acceptAlumni(a)}>Accept</Button>
+              <Button onClick={() => declineAlumni(a._id)}>Decline</Button>
             </List.Item>
           )}
         />
-      </div>
+      </span>
     </>
   );
+
+  function acceptAlumni(alumni) {
+    alumni.verified = true;
+    fetch(`${Config.websiteServiceUrl}alumni`, buildConfig({
+      method: `PUT`,
+      body: JSON.stringify(alumni)
+    }))
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        loadData();
+      })
+      .catch(err => {
+        notification['error']({
+          message: 'Oh No! Something went wrong!',
+          description: `Sorry about that! This alumni could not be removed from the list`
+        });
+      });
+  }
+  function declineAlumni(id) {
+    fetch(`${Config.websiteServiceUrl}alumni/${id}`, buildConfig({
+      method: `DELETE`
+    }))
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        loadData();
+      })
+      .catch(err => {
+        notification['error']({
+          message: 'Oh No! Something went wrong!',
+          description: `Sorry about that! This alumni could not be removed from the list`
+        });
+      });
+  }
 
   function handleError(err) {
     notification['error']({
@@ -201,11 +212,10 @@ function Class() {
       language: newLanguage
     }
 
-    return fetch(`${Config.websiteServiceUrl}language`, {
+    return fetch(`${Config.websiteServiceUrl}language`, buildConfig({
       method: `POST`,
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
-    })
+    }))
       .then(res => {
         if (!res.ok) {
           throw Error(res.statusText);
@@ -216,10 +226,16 @@ function Class() {
       });
   }
 
+  function showModal(alumni) {
+    setSelectedAlumni(alumni);
+    setVisible(true);
+  };
+
+
   function removeLanguage(id) {
-    fetch(`${Config.websiteServiceUrl}language/${id}`, {
+    fetch(`${Config.websiteServiceUrl}language/${id}`, buildConfig({
       method: `DELETE`
-    })
+    }))
       .then(res => {
         if (!res.ok) {
           throw Error(res.statusText);
@@ -235,9 +251,9 @@ function Class() {
   }
 
   function removeClass(id) {
-    fetch(`${Config.websiteServiceUrl}class/${id}`, {
+    fetch(`${Config.websiteServiceUrl}class/${id}`, buildConfig({
       method: `DELETE`
-    })
+    }))
       .then(res => {
         if (!res.ok) {
           throw Error(res.statusText);

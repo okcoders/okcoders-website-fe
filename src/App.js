@@ -12,6 +12,7 @@ import Login from './alumni/login.js';
 import { NavBar } from './alumni/NavBar.component';
 import { JumboTron } from './alumni/JumboTron.component';
 import { Layout } from 'antd';
+import PrivateRoute from './components/PrivateRoute'
 const { Header, Content, Footer } = Layout;
 
 class App extends Component {
@@ -19,15 +20,15 @@ class App extends Component {
     const Nav = withRouter(NavBar)
     return (
       <>
-         <Router>
+        <Router>
           <Layout>
             <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-              <Nav/>
+              <Nav />
             </Header>
-            <JumboTron/>
+            <JumboTron />
             <Content style={{ padding: '0 75px', marginTop: 24 }} className="content">
               <Route path="/alumni" exact component={Alumni} />
-              <Route path="/admin" exact component={Class} />
+              <PrivateRoute path="/admin" exact component={Class} />
               <Route path="/alumni/:id" exact component={AlumniDetail} />
               <Route path="/addAlumni" exact component={AddAlumniForm} />
               <Route path="/login" exact component={Login} />
