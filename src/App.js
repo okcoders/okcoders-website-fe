@@ -8,6 +8,7 @@ import { Alumni } from "./alumni/alumni.component.js"
 import { Class } from "./admin/class.component.js"
 import { AlumniDetail } from "./alumni/alumni-detail.component.js";
 import AddAlumniForm from './alumni/form.js';
+import Login from './alumni/login.js';
 import { NavBar } from './alumni/NavBar.component';
 import { JumboTron } from './alumni/JumboTron.component';
 import { Layout } from 'antd';
@@ -29,6 +30,7 @@ class App extends Component {
               <Route path="/admin" exact component={Class} />
               <Route path="/alumni/:id" exact component={AlumniDetail} />
               <Route path="/addAlumni" exact component={AddAlumniForm} />
+              <Route path="/login" exact component={Login} />
             </Content>
             <Footer style={{ textAlign: 'center' }}>
               Ant Design ©2018 Created by Ant UED
