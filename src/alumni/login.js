@@ -49,7 +49,6 @@ function Login(props) {
     };
 
     if (token) {
-        console.log('here');
         return <Redirect to='/admin' />
     }
 
