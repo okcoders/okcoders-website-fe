@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf';
-import { Table, Divider, Tag, notification, Input, List, Button, Icon, Modal } from 'antd';
+import { Table, Divider, Tag, notification, Input, List, Button, Icon, Modal, Row, Col } from 'antd';
 import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
 import EditClassModal from './editModal.component';
 import baseHeaders from '../utils/baseHeaders';
+import styled from 'styled-components';
 
 function Class() {
   const [classes, setClasses] = useState([]);
@@ -16,6 +17,19 @@ function Class() {
   const [languageProcessing, setLanguageProcessing] = useState(false);
   const [selectedAlumni, setSelectedAlumni] = useState({});
   const buildConfig = baseHeaders(localStorage.token);
+
+  const H3 = styled.h3`
+    margin: 48px 0 0 0;
+  `;
+  
+  const StyledButton = styled(Button)`
+    margin-left: 10px; 
+    float: right;
+  `;
+
+  const StyledIcon = styled(Icon)`
+    float: right;  
+  `
 
   const handleCancel = () => {
     setVisible(false);
@@ -65,23 +79,59 @@ function Class() {
 
   return (
     <>
-      <div>
-        <h3 style={{ margin: '16px 0', marginTop: '48px' }}>Languages</h3>
-        <List
-          bordered
-          dataSource={allLanguages}
-          renderItem={l => (
-            <List.Item>
-              {l.language}
-              <Icon type="close-circle" onClick={() => removeLanguage(l._id)} />
-            </List.Item>
-          )}
-        />
-        <Input placeholder="Enter a new language" value={newLanguage} onChange={e => setNewLanguage(e.target.value)} />
-        <Button type="primary" onClick={saveNewLanguage} disabled={languageProcessing}>New Language</Button>
-      </div>
+      <Row>
+        <Col span={11}>
+          <div>
+            <H3>Languages</H3>
+            <List
+              bordered
+              dataSource={allLanguages}
+              renderItem={l => (
+                <List.Item>
+                  {l.language}
+                  <StyledIcon type="close-circle" onClick={() => removeLanguage(l._id)} />
+                </List.Item>
+              )}
+            />
+            <Input placeholder="Enter a new language" value={newLanguage} onChange={e => setNewLanguage(e.target.value)} />
+            <Button type="primary" onClick={saveNewLanguage} disabled={languageProcessing}>New Language</Button>
+          </div>
+        </Col>
+        <Col span={1} />
+        <Col span={11}>
+          <span>
+            <Modal
+              title="Basic Modal"
+              visible={visible}
+              onCancel={handleCancel}
+              onOk={handleCancel}
+            >
+              <p>Age: {selectedAlumni.age}</p>
+              <p>Email: {selectedAlumni.email}</p>
+              <p>Github Profile: {selectedAlumni.github}</p>
+              <p>Linked In Profile: {selectedAlumni.linkedin}</p>
+              <p>Classes taken: {(selectedAlumni.languages || []).join(', ')}</p>
+            </Modal>
+            <H3>Confirm New Alumni</H3>
+            <List
+              bordered
+              dataSource={alumni}
+              renderItem={a => (
+                <List.Item>
+                  {`${a.firstName} ${a.lastName}`}
+                  <StyledButton type="primary" onClick={() => showModal(a)}>
+                    More Info
+               </StyledButton>
+                  <StyledButton onClick={() => acceptAlumni(a)}>Accept</StyledButton>
+                  <StyledButton onClick={() => declineAlumni(a._id)}>Decline</StyledButton>
+                </List.Item>
+              )}
+            />
+          </span>
+        </Col>
+      </Row>
       < div >
-        <h3>Previous Classes</h3>
+        <H3>Previous Classes</H3>
         <Table dataSource={classes}>
           <Column
             title="Title"
@@ -131,35 +181,7 @@ function Class() {
         </Table>
         <AddClassModal languages={allLanguages} onUpdate={loadData} onError={handleError} />
       </div >
-      <span>
-        <Modal
-          title="Basic Modal"
-          visible={visible}
-          onCancel={handleCancel}
-          onOk={handleCancel}
-        >
-          <p>Age: {selectedAlumni.age}</p>
-          <p>Email: {selectedAlumni.email}</p>
-          <p>Github Profile: {selectedAlumni.github}</p>
-          <p>Linked In Profile: {selectedAlumni.linkedin}</p>
-          <p>Classes taken: {(selectedAlumni.languages || []).join(', ')}</p>
-        </Modal>
-        <h3 style={{ margin: '16px 0' }}>Confirm New Alumni</h3>
-        <List
-          bordered
-          dataSource={alumni}
-          renderItem={a => (
-            <List.Item>
-              {`${a.firstName} ${a.lastName}`}
-              <Button type="primary" onClick={() => showModal(a)}>
-                More Info
-               </Button>
-              <Button onClick={() => acceptAlumni(a)}>Accept</Button>
-              <Button onClick={() => declineAlumni(a._id)}>Decline</Button>
-            </List.Item>
-          )}
-        />
-      </span>
+
     </>
   );
 
