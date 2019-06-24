@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
-import { Form, Input, Row, Col, Button, Layout, notification, Select } from 'antd';
+import { Form, Input, Row, Col, Button, Layout, notification } from 'antd';
 import { Redirect } from "react-router-dom";
 import Config from '../config/app.local.conf.js';
 
@@ -11,9 +11,7 @@ function Login(props) {
     const [password, setPassword] = useState('');
     const [token, setToken] = useState('');
 
-    const { TextArea } = Input;
-    const { Header, Content, Footer } = Layout;
-    const Option = Select.Option;
+    const { Content } = Layout;
 
     function clearFields() {
         setUserName('');

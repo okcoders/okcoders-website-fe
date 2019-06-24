@@ -13,6 +13,7 @@ function AddClassModal(props) {
     const [languages, setLanguages] = useState([]);
     const buildConfig = baseHeaders(localStorage.token);
     const Option = Select.Option;
+    const token = localStorage.token;
 
     const showModal = () => {
         setVisible(true);
@@ -87,7 +88,10 @@ function AddClassModal(props) {
 
         fetch(`${Config.websiteServiceUrl}class`, buildConfig({
             method: `POST`,
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': token
+            },
             body: JSON.stringify(newClass)
         }))
             .then(res => {

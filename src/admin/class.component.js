@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf';
-import { Table, Divider, Tag, notification, Input, List, Button, Icon, Modal, Row, Col, Layout } from 'antd';
+import { Table, Divider, Tag, notification, Input, List, Button, Icon, Modal, Row, Col } from 'antd';
 import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
 import EditClassModal from './editModal.component';
@@ -14,7 +14,6 @@ function Class() {
   const [visible, setVisible] = useState(false);
   const [newLanguage, setNewLanguage] = useState('');
   const { Column } = Table;
-  const { Footer } = Layout;
   const [languageProcessing, setLanguageProcessing] = useState(false);
   const [selectedAlumni, setSelectedAlumni] = useState({});
   const buildConfig = baseHeaders(localStorage.token);

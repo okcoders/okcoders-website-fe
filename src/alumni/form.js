@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import {
-    Form, Input, Row, Col, Button, Layout, Menu, notification, List,
-    Select } from 'antd';
+import { Form, Input, Row, Col, Button, Layout, notification, Select } from 'antd';
 import Config from '../config/app.local.conf.js';
 import { isEmpty } from 'lodash';
 
@@ -20,7 +18,7 @@ function AddAlumniForm(props) {
     const [classes, setClass] = useState([]);
 
     const { TextArea } = Input;
-    const { Header, Content, Footer } = Layout;
+    const { Content, Footer } = Layout;
     const Option = Select.Option;
 
 
@@ -65,12 +63,12 @@ function AddAlumniForm(props) {
         },
     };
 
-      
+
     function handleChange(ids) {
         const alumniClasses = allClasses.filter(l => ids.includes(l._id));
         setClass(alumniClasses);
     }
-    
+
 
     return (
 

@@ -4,7 +4,7 @@ import { Menu } from 'antd'
 import './alumni.component.css';
 
 export function NavBar(props) {
-  const [auth, setAuth] = useState(localStorage.getItem('token') || '');
+  const [auth] = useState(localStorage.getItem('token') || '');
   const authLinks = (
     <>
       <div className="logo" />
