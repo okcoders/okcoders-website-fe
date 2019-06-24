@@ -23,6 +23,12 @@ export function NavBar(props) {
         <Menu.Item key="/admin">
           <Link to="/admin">Admin</Link>
         </Menu.Item>
+        <Menu.Item key="/login">
+          <Link to="/login" onClick={() => {
+            localStorage.removeItem('token');
+            document.location.reload();
+          }}>Log Out</Link>
+        </Menu.Item>
       </Menu>
     </>
   )

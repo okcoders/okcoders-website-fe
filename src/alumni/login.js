@@ -48,8 +48,12 @@ function Login(props) {
         },
     };
 
+    function refreshPage() {
+        document.location.reload();
+    }
+
     if (token) {
-        return <Redirect to='/admin' />
+        return < Redirect to='/admin' />
     }
 
     return (
@@ -106,6 +110,7 @@ function Login(props) {
                 clearFields();
                 localStorage.setItem("token", res.data.token);
                 setToken(res.data.token);
+                refreshPage();
             }).catch(function (error) {
                 displayNotificationError(error.response.data);
                 clearFields();

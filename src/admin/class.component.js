@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Config from '../config/app.local.conf';
-import { Table, Divider, Tag, notification, Input, List, Button, Icon, Modal, Row, Col } from 'antd';
+import { Table, Divider, Tag, notification, Input, List, Button, Icon, Modal, Row, Col, Layout } from 'antd';
 import { isEmpty } from 'lodash';
 import AddClassModal from './modalSubmit.component';
 import EditClassModal from './editModal.component';
 import baseHeaders from '../utils/baseHeaders';
 import styled from 'styled-components';
+import { Redirect } from "react-router-dom";
 
 function Class() {
   const [classes, setClasses] = useState([]);
@@ -14,9 +15,11 @@ function Class() {
   const [visible, setVisible] = useState(false);
   const [newLanguage, setNewLanguage] = useState('');
   const { Column } = Table;
+  const { Footer } = Layout;
   const [languageProcessing, setLanguageProcessing] = useState(false);
   const [selectedAlumni, setSelectedAlumni] = useState({});
   const buildConfig = baseHeaders(localStorage.token);
+
 
   const H3 = styled.h3`
     margin: 55px 0 5px 0;
@@ -186,7 +189,6 @@ function Class() {
         </Table>
         <AddClassModal languages={allLanguages} onUpdate={loadData} onError={handleError} />
       </div >
-
     </>
   );
 
@@ -252,6 +254,10 @@ function Class() {
         handleError()
       });
   }
+
+  // function redirectToLogin() {
+  //   <Redirect to='/login' />
+  // }
 
   function showModal(alumni) {
     setSelectedAlumni(alumni);
