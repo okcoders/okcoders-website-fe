@@ -6,7 +6,6 @@ import AddClassModal from './modalSubmit.component';
 import EditClassModal from './editModal.component';
 import baseHeaders from '../utils/baseHeaders';
 import styled from 'styled-components';
-import { Redirect } from "react-router-dom";
 
 function Class() {
   const [classes, setClasses] = useState([]);
@@ -254,10 +253,6 @@ function Class() {
         handleError()
       });
   }
-
-  // function redirectToLogin() {
-  //   <Redirect to='/login' />
-  // }
 
   function showModal(alumni) {
     setSelectedAlumni(alumni);

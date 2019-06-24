@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Axios from 'axios';
-import {
-    Form, Input, Row, Col, Button, Layout, Menu, notification, List,
-    Select
-} from 'antd';
+import { Form, Input, Row, Col, Button, Layout, notification, Select } from 'antd';
 import { Redirect } from "react-router-dom";
 import Config from '../config/app.local.conf.js';
-import { isEmpty } from 'lodash';
 
 
 function Login(props) {
