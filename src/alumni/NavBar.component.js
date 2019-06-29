@@ -4,7 +4,7 @@ import { Menu } from 'antd'
 import './alumni.component.css';
 
 export function NavBar(props) {
-  const [auth, setAuth] = useState(localStorage.getItem('token') || '');
+  const [auth] = useState(localStorage.getItem('token') || '');
   const authLinks = (
     <>
       <div className="logo" />
@@ -22,6 +22,12 @@ export function NavBar(props) {
         </Menu.Item>
         <Menu.Item key="/admin">
           <Link to="/admin">Admin</Link>
+        </Menu.Item>
+        <Menu.Item key="/login">
+          <Link to="/login" onClick={() => {
+            localStorage.removeItem('token');
+            document.location.reload();
+          }}>Log Out</Link>
         </Menu.Item>
       </Menu>
     </>

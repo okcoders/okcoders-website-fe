@@ -18,6 +18,7 @@ function Class() {
   const [selectedAlumni, setSelectedAlumni] = useState({});
   const buildConfig = baseHeaders(localStorage.token);
 
+
   const H3 = styled.h3`
     margin: 55px 0 5px 0;
   `;
@@ -186,7 +187,6 @@ function Class() {
         </Table>
         <AddClassModal languages={allLanguages} onUpdate={loadData} onError={handleError} />
       </div >
-
     </>
   );
 

@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Axios from 'axios';
-import {
-    Form, Input, Row, Col, Button, Layout, Menu, notification, List,
-    Select
-} from 'antd';
+import { Form, Input, Row, Col, Button, Layout, notification } from 'antd';
 import { Redirect } from "react-router-dom";
 import Config from '../config/app.local.conf.js';
-import { isEmpty } from 'lodash';
 
 
 function Login(props) {
@@ -15,9 +11,7 @@ function Login(props) {
     const [password, setPassword] = useState('');
     const [token, setToken] = useState('');
 
-    const { TextArea } = Input;
-    const { Header, Content, Footer } = Layout;
-    const Option = Select.Option;
+    const { Content } = Layout;
 
     function clearFields() {
         setUserName('');
@@ -48,8 +42,12 @@ function Login(props) {
         },
     };
 
+    function refreshPage() {
+        document.location.reload();
+    }
+
     if (token) {
-        return <Redirect to='/admin' />
+        return < Redirect to='/admin' />
     }
 
     return (
@@ -106,6 +104,7 @@ function Login(props) {
                 clearFields();
                 localStorage.setItem("token", res.data.token);
                 setToken(res.data.token);
+                refreshPage();
             }).catch(function (error) {
                 displayNotificationError(error.response.data);
                 clearFields();

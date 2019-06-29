@@ -6,7 +6,7 @@ import './alumni.component.css';
 import { Logo } from './OKCoderLogo.component';
 import { AlumniCard } from './AlumniCard.component'
 
-
+//spruce up the detail page
 export function AlumniDetail(props) {
     console.log(props)
     const [alumni, setAlumni] = useState({});
@@ -15,15 +15,15 @@ export function AlumniDetail(props) {
     useEffect(() => {
         console.log("called", alumni, error)
         if (isEmpty(alumni) && !error) {
-          fetch(Config.websiteServiceUrl + `alumni/` + props.match.params.id)
-          .then(res => res.json())
-          .then(json => setAlumni(json))
-          .catch(err => {
-              setError(true)
-              displayErrorNotification(err)
-          })
+            fetch(Config.websiteServiceUrl + `alumni/` + props.match.params.id)
+                .then(res => res.json())
+                .then(json => setAlumni(json))
+                .catch(err => {
+                    setError(true)
+                    displayErrorNotification(err)
+                })
         }
-      });
+    });
 
     function displayErrorNotification(err) {
         notification['error']({
@@ -34,12 +34,12 @@ export function AlumniDetail(props) {
 
     return (
         <>
-            <Logo/>
+            <Logo />
             <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
-                {!error && <AlumniCard alumni={alumni}/>
+                {!error && <AlumniCard alumni={alumni} />
                 }
             </div>
         </>
     );
-    }
+}
 
