@@ -19,18 +19,23 @@ function Class() {
   const buildConfig = baseHeaders(localStorage.token);
 
   const H3 = styled.h3`
-    margin: 48px 0 0 0;
+    margin: 55px 0 5px 0;
   `;
-  
+
   const StyledButton = styled(Button)`
     margin-left: 10px; 
     float: right;
+    margin-top: 0px;
   `;
+
+  const StyledListItem = styled(List.Item)`
+    padding: 15px;
+    font-weight: 700;
+  `
 
   const StyledIcon = styled(Icon)`
     float: right;  
   `
-
   const handleCancel = () => {
     setVisible(false);
   }
@@ -87,14 +92,14 @@ function Class() {
               bordered
               dataSource={allLanguages}
               renderItem={l => (
-                <List.Item>
+                <StyledListItem>
                   {l.language}
                   <StyledIcon type="close-circle" onClick={() => removeLanguage(l._id)} />
-                </List.Item>
+                </StyledListItem>
               )}
             />
             <Input placeholder="Enter a new language" value={newLanguage} onChange={e => setNewLanguage(e.target.value)} />
-            <Button type="primary" onClick={saveNewLanguage} disabled={languageProcessing}>New Language</Button>
+            <Button type="primary" onClick={saveNewLanguage} disabled={languageProcessing}>Add Language</Button>
           </div>
         </Col>
         <Col span={1} />
@@ -117,14 +122,14 @@ function Class() {
               bordered
               dataSource={alumni}
               renderItem={a => (
-                <List.Item>
+                <StyledListItem>
                   {`${a.firstName} ${a.lastName}`}
                   <StyledButton type="primary" onClick={() => showModal(a)}>
                     More Info
                </StyledButton>
                   <StyledButton onClick={() => acceptAlumni(a)}>Accept</StyledButton>
                   <StyledButton onClick={() => declineAlumni(a._id)}>Decline</StyledButton>
-                </List.Item>
+                </StyledListItem>
               )}
             />
           </span>
@@ -132,7 +137,7 @@ function Class() {
       </Row>
       < div >
         <H3>Previous Classes</H3>
-        <Table dataSource={classes}>
+        <Table dataSource={classes} bordered={true}>
           <Column
             title="Title"
             dataIndex="title"
